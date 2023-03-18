@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GeoGuesserJava</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="open_maps_to_select_location">Open Maps To Select Location</string>
+</resources>
