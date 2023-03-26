@@ -1,55 +1,42 @@
 package com.example.geoguesserjava.entity;
 
-import java.util.List;
-import java.util.Objects;
+public class User {
+    private Long id;
 
-public class User extends AbstractEntity{
-    private String username;
-    private String password;
     private String email;
-    private String firstName;
-    private String lastName;
     private Integer level;
     private Double points;
-    private List<String> alreadyPickedCityNames;
+    private String status;
+    private String firstName;
 
-    public User(String username, String password, String email, String firstName, String lastName, Integer level, Double points, List<String> alreadyPickedCityNames) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.level = level;
-        this.points = points;
-        this.alreadyPickedCityNames = alreadyPickedCityNames;
+    private String lastName;
+
+    private String username;
+
+    private String registrationDate;
+
+    private String userRole;
+
+    private byte[] image;
+
+    public byte[] getImage() {
+        return image;
     }
 
-    public User(Integer id, String username, String password, String email, String firstName, String lastName, Integer level, Double points, List<String> alreadyPickedCityNames) {
-        super(id);
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.level = level;
-        this.points = points;
-        this.alreadyPickedCityNames = alreadyPickedCityNames;
+    public User setImage(byte[] image) {
+        this.image = image;
+        return this;
     }
 
-    public String getUsername() {
-        return username;
+    public User() {
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public Long getId() {
+        return id;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -58,22 +45,6 @@ public class User extends AbstractEntity{
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public Integer getLevel() {
@@ -92,39 +63,61 @@ public class User extends AbstractEntity{
         this.points = points;
     }
 
-    public List<String> getAlreadyPickedCityNames() {
-        return alreadyPickedCityNames;
+
+
+
+    public String getStatus() {
+        return status;
     }
 
-    public void setAlreadyPickedCityNames(List<String> alreadyPickedCityNames) {
-        this.alreadyPickedCityNames = alreadyPickedCityNames;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        if (!super.equals(o)) return false;
-        User user = (User) o;
-        return Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(email, user.email) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(level, user.level) && Objects.equals(points, user.points) && Objects.equals(alreadyPickedCityNames, user.alreadyPickedCityNames);
+    public String getFirstName() {
+        return firstName;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), username, password, email, firstName, lastName, level, points, alreadyPickedCityNames);
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(String registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserDto{" +
                 "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", level=" + level +
-                ", points=" + points +
-                ", alreadyPickedCityNames=" + alreadyPickedCityNames +
                 '}';
     }
 }

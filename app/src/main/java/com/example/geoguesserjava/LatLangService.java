@@ -5,7 +5,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 
-import com.example.geoguesserjava.repository.CityRepository;
+import com.example.geoguesserjava.server.CityHttpClient;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
@@ -18,8 +18,12 @@ public class LatLangService {
 
     public LatLangService(Context context) {
         this.geocoder = new Geocoder(context);
-        CityRepository cityRepository = new CityRepository(context);
-        this.unknownCityLocation = findCityLatLang(cityRepository.find(1).getName());
+        CityHttpClient cityHttpClient = new CityHttpClient();
+        try {
+            this.unknownCityLocation = findCityLatLang(cityHttpClient.getRandomCity().getName());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public LatLng findCityLatLang(String cityName) {
