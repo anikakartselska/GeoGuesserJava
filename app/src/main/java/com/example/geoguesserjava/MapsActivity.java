@@ -1,51 +1,121 @@
 package com.example.geoguesserjava;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
+import com.example.geoguesserjava.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.example.geoguesserjava.databinding.ActivityMapsBinding;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
+    private MapManagementService mapManagementService;
+    private Button showIfGuessed;
+    private UnknownCityToGuessCityLatLng unknownCityToGuessCityLatLng;
 
+    private boolean twoPlayers;
+
+    private int playerNumber = 1;
+
+    public final LatLngBounds bulgariaBounds = new LatLngBounds(
+            new LatLng(41.2352, 22.3571), // southwest corner of Bulgaria
+            new LatLng(44.2176, 28.6098)  // northeast corner of Bulgaria
+    );
+
+    /**
+     * It initializes the activity and sets up the map view to display a Google Map
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down then this Bundle contains the data it most
+     *                           recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        unknownCityToGuessCityLatLng = getIntent()
+                .getParcelableExtra("unknownCityToGuessCityLatLng");
+        twoPlayers = getIntent()
+                .getBooleanExtra("twoPlayers", false);
+        //getting the UnknownCityToGuessCityLatLng from the StreetViewActivity where unknownCityLatLang is set
+        mapManagementService = new MapManagementService(this);
         super.onCreate(savedInstanceState);
-
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        assert mapFragment != null;
+        mapFragment.getMapAsync(this);//Initialize the Google Map
+    }
+
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+        mMap.getUiSettings().setAllGesturesEnabled(true);
+        // Set the bounds of the camera target to Bulgaria
+        mMap.setLatLngBoundsForCameraTarget(bulgariaBounds);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mapManagementService.centerOfBulgaria, 6));
+        mMap.setOnMapClickListener(this);
+    }
+
+    @Override
+    public void onMapClick(@NonNull LatLng latLng) {
+        // update the position of the marker
+        MarkerOptions markerOptions = new MarkerOptions();
+        if (bulgariaBounds.contains(latLng)) {//checking if the user clicked on the bounds of bulgaria
+            markerOptions.position(latLng); //putting marker to the clicked location
+            unknownCityToGuessCityLatLng.setGuessCityLatLng(latLng);
+            mMap.clear();//clearing the map from previous selection
+            mMap.addMarker(markerOptions);//adding the new selection
+            showIfGuessed = findViewById(R.id.show_if_guessed);
+            showIfGuessed.setVisibility(View.VISIBLE); //set the button for guessing visible so the user can click on it
+        }
     }
 
     /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
+     * Shows the distance between the guess city and the unknown city.
+     * Positions the camera so the user can see the whole map and the line between
+     * the two cities and hides the button so the user is no longer able to guess.
+     *
+     * @param view represents the Button view that was clicked to trigger the method.
      */
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+    public void OnShowIfGuessedClick(View view) {
+        if (playerNumber == 1 && twoPlayers) {
+            playerNumber++;
+            mMap.clear();
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        } else {
+            mapManagementService.drawLineBetweenTwoLocationsOnTheMap(unknownCityToGuessCityLatLng.getGuessCityLatLng(), unknownCityToGuessCityLatLng.getUnknownCityLatLng(), mMap);
+            DialogsService.showResultsAfterGuessingTheCityDialog(mapManagementService.findDistanceBetweenTwoCitiesInKilometers(unknownCityToGuessCityLatLng.getGuessCityLatLng(),
+                            unknownCityToGuessCityLatLng.getUnknownCityLatLng()),
+                    this,
+                    (dialog, which) -> {
+                        goToUserScreenActivity();
+                    });
+            showIfGuessed = findViewById(R.id.show_if_guessed);
+            showIfGuessed.setVisibility(View.GONE);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mapManagementService.centerOfBulgaria, 6));
+        }
     }
+
+    private void goToUserScreenActivity() {
+        Intent intent = new Intent(MapsActivity.this, UserScreenActivity.class);
+        startActivity(intent);
+    }
+
 }
+

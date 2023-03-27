@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".StreetViewActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/googlemapstreetview"
@@ -13,26 +14,23 @@
         android:layout_centerInParent="true"
         tools:layout="@layout/activity_main">
     </androidx.fragment.app.FragmentContainerView>
-        <TextView
-            android:id="@+id/distance"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+<!--        <TextView-->
+<!--            android:id="@+id/distance"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent" />-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timer"
+        android:textSize="24sp"
+        android:textColor="#F44336"
+        app:drawableTopCompat="@drawable/baseline_timer_24"
+        android:layout_alignEnd ="@id/googlemapstreetview"/>
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/open_maps_activity"
+            android:onClick="OnOpenMapsActivityClick"
             android:text="@string/open_maps_to_select_location"/>
-
-
-
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:id="@+id/fab"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentEnd="true"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:contentDescription="TODO"-->
-<!--        android:src="@android:drawable/ic_dialog_map" />-->
-
 
 </RelativeLayout>

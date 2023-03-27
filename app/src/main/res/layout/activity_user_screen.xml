@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/logout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserScreenActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bulgariamapflagpin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="327dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="90dp"
+        android:backgroundTint="#C1FFFFFF"
+        android:padding="2sp"
+        android:paddingStart="2sp"
+        android:paddingLeft="2sp"
+        android:paddingTop="2sp"
+        android:paddingEnd="2sp"
+        android:paddingRight="2sp"
+        android:paddingBottom="2sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logOut">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="549dp"
+            app:layout_constraintEnd_toEndOf="@+id/textView6"
+            app:layout_constraintStart_toEndOf="@+id/textView6">
+
+            <Button
+                android:id="@+id/start_game_for_two_button"
+                android:layout_width="220dp"
+                android:layout_height="47dp"
+                android:layout_marginStart="52dp"
+                android:layout_marginTop="380dp"
+                android:onClick="onStartTwoPlayersGameClick"
+                android:text="Започни игра за двама"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/start_game_button"
+                android:layout_width="220dp"
+                android:layout_height="47dp"
+                android:layout_marginStart="52dp"
+                android:layout_marginTop="336dp"
+                android:onClick="onStartGameClick"
+                android:text="Започни игра"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="290dp"
+                android:layout_height="39dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="280dp"
+                android:text="Точки до следващото ниво: 1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="160dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="84dp"
+                android:layout_marginTop="220dp"
+                android:text="Точките ти: 100"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="163dp"
+                android:layout_height="26dp"
+                android:layout_marginTop="168dp"
+                android:text="Твоето ниво: 1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/register_text"
+                android:layout_width="303dp"
+                android:layout_height="72dp"
+                android:layout_marginTop="16dp"
+                android:text="Добре дошъл, юзър !"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="30sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="104dp"
+                android:layout_height="88dp"
+                android:layout_marginTop="60dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="43dp"
+                android:layout_height="43dp"
+                android:layout_marginStart="176dp"
+                android:layout_marginTop="116dp"
+                android:text="+"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/logOut"
+        android:layout_width="110dp"
+        android:layout_height="51dp"
+        android:layout_marginBottom="43dp"
+        android:onClick="onLogoutClick"
+        android:text="Изход"
+        app:layout_constraintBottom_toTopOf="@+id/cardView2"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
