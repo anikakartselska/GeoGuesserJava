@@ -1,19 +1,23 @@
 package com.example.geoguesserjava;
 
+import static com.example.geoguesserjava.StringConstants.getPersonIcon;
+import static com.example.geoguesserjava.StringConstants.resultsFromGameTitle;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.geoguesserjava.databinding.ActivityMapsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -26,10 +30,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private MapManagementService mapManagementService;
     private Button showIfGuessed;
     private UnknownCityToGuessCityLatLng unknownCityToGuessCityLatLng;
-
     private boolean twoPlayers;
-
     private int playerNumber = 1;
+
+    private TextView usernameText;
+
+    private LatLng guessCityOfTheFirstPlayerInTwoPlayerGame = null;
 
     public final LatLngBounds bulgariaBounds = new LatLngBounds(
             new LatLng(41.2352, 22.3571), // southwest corner of Bulgaria
@@ -55,6 +61,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        usernameText = findViewById(R.id.username_text);
+        usernameText.setText("Username");
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
@@ -74,16 +82,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapClick(@NonNull LatLng latLng) {
-        // update the position of the marker
-        MarkerOptions markerOptions = new MarkerOptions();
         if (bulgariaBounds.contains(latLng)) {//checking if the user clicked on the bounds of bulgaria
-            markerOptions.position(latLng); //putting marker to the clicked location
-            unknownCityToGuessCityLatLng.setGuessCityLatLng(latLng);
             mMap.clear();//clearing the map from previous selection
-            mMap.addMarker(markerOptions);//adding the new selection
+            addMarkerWithIcon(latLng, null);
+            unknownCityToGuessCityLatLng.setGuessCityLatLng(latLng);
             showIfGuessed = findViewById(R.id.show_if_guessed);
             showIfGuessed.setVisibility(View.VISIBLE); //set the button for guessing visible so the user can click on it
         }
+    }
+
+    private void addMarkerWithIcon(LatLng latLng, BitmapDescriptor markerIcon) {
+        // update the position of the marker
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng); //putting marker to the clicked location
+        if (markerIcon != null) {
+            markerOptions.icon(markerIcon);
+        }
+        mMap.addMarker(markerOptions);//adding the new selection
     }
 
     /**
@@ -94,27 +109,65 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * @param view represents the Button view that was clicked to trigger the method.
      */
     public void OnShowIfGuessedClick(View view) {
+        mMap.clear();
         if (playerNumber == 1 && twoPlayers) {
             playerNumber++;
-            mMap.clear();
-
+            guessCityOfTheFirstPlayerInTwoPlayerGame = unknownCityToGuessCityLatLng.getGuessCityLatLng();
+            usernameText.setText("Приятел");
+            return;
+        } else if (playerNumber == 2 && twoPlayers) {
+            showDialogAfterGuess(unknownCityToGuessCityLatLng, guessCityOfTheFirstPlayerInTwoPlayerGame, "Username");
+            mapManagementService.drawLineBetweenTwoLocationsOnTheMap(guessCityOfTheFirstPlayerInTwoPlayerGame, unknownCityToGuessCityLatLng.getUnknownCityLatLng(), mMap);
+            addMarkerWithIcon(guessCityOfTheFirstPlayerInTwoPlayerGame, getPersonIcon(this));
         } else {
-            mapManagementService.drawLineBetweenTwoLocationsOnTheMap(unknownCityToGuessCityLatLng.getGuessCityLatLng(), unknownCityToGuessCityLatLng.getUnknownCityLatLng(), mMap);
-            DialogsService.showResultsAfterGuessingTheCityDialog(mapManagementService.findDistanceBetweenTwoCitiesInKilometers(unknownCityToGuessCityLatLng.getGuessCityLatLng(),
-                            unknownCityToGuessCityLatLng.getUnknownCityLatLng()),
-                    this,
-                    (dialog, which) -> {
-                        goToUserScreenActivity();
-                    });
-            showIfGuessed = findViewById(R.id.show_if_guessed);
-            showIfGuessed.setVisibility(View.GONE);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mapManagementService.centerOfBulgaria, 6));
+            showDialogAfterGuess(unknownCityToGuessCityLatLng, null, "Username");
         }
+
+        addMarkerWithIcon(unknownCityToGuessCityLatLng.getUnknownCityLatLng(), null);
+        addMarkerWithIcon(unknownCityToGuessCityLatLng.getGuessCityLatLng(), getPersonIcon(this));
+        mapManagementService.drawLineBetweenTwoLocationsOnTheMap(unknownCityToGuessCityLatLng.getGuessCityLatLng(), unknownCityToGuessCityLatLng.getUnknownCityLatLng(), mMap);
+
+        showIfGuessed = findViewById(R.id.show_if_guessed);
+        showIfGuessed.setVisibility(View.GONE);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mapManagementService.centerOfBulgaria, 6));
+    }
+
+
+    private void showDialogAfterGuess(UnknownCityToGuessCityLatLng unknownCityToGuessCityLatLng, LatLng guessCityOfTheFirstPlayerInTwoPlayerGame, String username) {
+        float firstPlayerKilometers = mapManagementService.findDistanceBetweenTwoCitiesInKilometers(unknownCityToGuessCityLatLng.getGuessCityLatLng(), unknownCityToGuessCityLatLng.getUnknownCityLatLng());
+        String htmlMessage = StringConstants.constructMessageForThePlayerResults(username,
+                firstPlayerKilometers,
+                calculatePoints(2, firstPlayerKilometers)
+        );
+        if (guessCityOfTheFirstPlayerInTwoPlayerGame != null) {
+            float secondPlayerKilometers = mapManagementService.findDistanceBetweenTwoCitiesInKilometers(guessCityOfTheFirstPlayerInTwoPlayerGame, unknownCityToGuessCityLatLng.getUnknownCityLatLng());
+            htmlMessage = htmlMessage.concat(StringConstants.constructMessageForThePlayerResults("Приятел",
+                    secondPlayerKilometers,
+                    calculatePoints(2, secondPlayerKilometers))
+            ).concat(
+                    StringConstants.messageForTheWinnerInTwoPlayersGame(
+                            firstPlayerKilometers < secondPlayerKilometers ? "Username" : "Приятел"
+                    )
+            )
+            ;
+
+        }
+        DialogsService.dialogAtTheBottomOfTheWindow(resultsFromGameTitle,
+                htmlMessage,
+                StringConstants.goToUserPage,
+                this,
+                (dialog, which) -> {
+                    goToUserScreenActivity();
+                });
     }
 
     private void goToUserScreenActivity() {
         Intent intent = new Intent(MapsActivity.this, UserScreenActivity.class);
         startActivity(intent);
+    }
+
+    private float calculatePoints(int userLevel, float kilometers) {
+        return (500 - kilometers) / userLevel;
     }
 
 }

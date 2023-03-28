@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -15,15 +16,36 @@ public class SpringServerAsyncTask extends AsyncTask<String, Void, String> {
      */
     private static final String BASE_URL = "http://10.0.2.2:8080/api/";
 
+    private String requestType;
+
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
+    }
+
     @Override
-    protected String doInBackground(String... urls) {
-        String methodUrl = urls[0];
+    protected String doInBackground(String... params) {
+        String methodUrl = params[0];
         String fullUrl = BASE_URL + methodUrl;
 
         try {
             URL url = new URL(fullUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+            connection.setRequestMethod(requestType);
+
+            if (requestType.equals("POST") || requestType.equals("PUT")) {
+                connection.setDoOutput(true);
+                OutputStream outputStream = connection.getOutputStream();
+                String requestBody = params[2];
+                outputStream.write(requestBody.getBytes());
+                outputStream.flush();
+                outputStream.close();
+            }
+
+            if (params.length > 3) {
+                String contentType = params[3];
+                connection.setRequestProperty("Content-Type", contentType);
+            }
+
             connection.connect();
 
             int responseCode = connection.getResponseCode();

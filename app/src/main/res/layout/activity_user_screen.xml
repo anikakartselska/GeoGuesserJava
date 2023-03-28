@@ -44,8 +44,8 @@
 
             <Button
                 android:id="@+id/start_game_for_two_button"
-                android:layout_width="220dp"
-                android:layout_height="47dp"
+                android:layout_width="218dp"
+                android:layout_height="57dp"
                 android:layout_marginStart="52dp"
                 android:layout_marginTop="380dp"
                 android:onClick="onStartTwoPlayersGameClick"
