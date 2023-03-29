@@ -16,34 +16,30 @@ public class SpringServerAsyncTask extends AsyncTask<String, Void, String> {
      */
     private static final String BASE_URL = "http://10.0.2.2:8080/api/";
 
-    private String requestType;
-
-    public void setRequestType(String requestType) {
-        this.requestType = requestType;
-    }
-
+    /**
+     *
+     * @param params[0] is the request ype, params[1] is the url and params[2] is optional,
+     *                  it is the request body
+     * @return
+     */
     @Override
     protected String doInBackground(String... params) {
-        String methodUrl = params[0];
-        String fullUrl = BASE_URL + methodUrl;
-
         try {
+            String requestType = params[0];
+            String methodUrl = params[1];
+            String fullUrl = BASE_URL + methodUrl;
             URL url = new URL(fullUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod(requestType);
 
-            if (requestType.equals("POST") || requestType.equals("PUT")) {
+            if ((requestType.equals("POST") || requestType.equals("PUT") )&& params.length > 2) {
+                connection.setRequestProperty("Content-Type", "application/json");
+                String requestBody = params[2];
                 connection.setDoOutput(true);
                 OutputStream outputStream = connection.getOutputStream();
-                String requestBody = params[2];
                 outputStream.write(requestBody.getBytes());
                 outputStream.flush();
                 outputStream.close();
-            }
-
-            if (params.length > 3) {
-                String contentType = params[3];
-                connection.setRequestProperty("Content-Type", contentType);
             }
 
             connection.connect();

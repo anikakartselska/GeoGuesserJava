@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.geoguesserjava.server.CityHttpClient;
+import com.example.geoguesserjava.server.UserHttpClient;
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.SupportStreetViewPanoramaFragment;
@@ -60,6 +61,8 @@ public class StreetViewActivity extends AppCompatActivity implements OnStreetVie
     @Override
     public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
         CityHttpClient cityHttpClient = new CityHttpClient();
+        UserHttpClient userHttpClient = new UserHttpClient();
+        userHttpClient.createUser();
         LatLng unknownCityLatLng = mapManagementService.findCityLatLang(cityHttpClient.getRandomCity().getName(), this);
         this.unknownCityToGuessCityLatLng = new UnknownCityToGuessCityLatLng(unknownCityLatLng);
         streetViewPanorama.setPosition(unknownCityToGuessCityLatLng.getUnknownCityLatLng(), StreetViewSource.OUTDOOR);

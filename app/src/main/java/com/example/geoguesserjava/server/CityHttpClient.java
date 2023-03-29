@@ -9,10 +9,13 @@ public class CityHttpClient {
 
     private static final String GET_RANDOM_CITY = "city/random";
 
+    private static final String GET = "GET";
+    private static final Gson GSON = new Gson();
+
     public City getRandomCity(){
         City city = null;
         SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
-        springServerAsyncTask.execute(GET_RANDOM_CITY);
+        springServerAsyncTask.execute(GET,GET_RANDOM_CITY);
         String result = null;
         try {
             result = springServerAsyncTask.get();
@@ -24,7 +27,6 @@ public class CityHttpClient {
     }
 
     private static City parseCity(String response) {
-        Gson gson = new Gson();
-        return gson.fromJson(response, City.class);
+        return GSON.fromJson(response, City.class);
     }
 }
