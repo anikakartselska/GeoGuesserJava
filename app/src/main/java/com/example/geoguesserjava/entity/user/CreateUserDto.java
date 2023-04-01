@@ -1,4 +1,4 @@
-package com.example.geoguesserjava.entity;
+package com.example.geoguesserjava.entity.user;
 
 public class CreateUserDto {
     private String password;
@@ -18,4 +18,6 @@ public class CreateUserDto {
         this.lastName = lastName;
         this.username = username;
     }
+
+
 }

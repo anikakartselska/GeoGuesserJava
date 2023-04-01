@@ -1,4 +1,4 @@
-package com.example.geoguesserjava.entity;
+package com.example.geoguesserjava.entity.user;
 
 public class User {
     private Long id;
@@ -15,6 +15,19 @@ public class User {
     private String registrationDate;
 
     private byte[] image;
+
+
+    public User(Long id, String email, Integer level, Double points, String firstName, String lastName, String username, String registrationDate, byte[] image) {
+        this.id = id;
+        this.email = email;
+        this.level = level;
+        this.points = points;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.registrationDate = registrationDate;
+        this.image = image;
+    }
 
     public byte[] getImage() {
         return image;
