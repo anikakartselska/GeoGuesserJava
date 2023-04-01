@@ -24,7 +24,6 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 
-
 public class StreetViewActivity extends AppCompatActivity implements OnStreetViewPanoramaReadyCallback {
     private MapManagementService mapManagementService;
     private CountDownTimer countDownTimer;
@@ -32,8 +31,10 @@ public class StreetViewActivity extends AppCompatActivity implements OnStreetVie
     private boolean twoPlayers;
 
     /**
-     * initializes the activity, sets its layout, and retrieves
+     * Initializes the activity, sets its layout, and retrieves
      * a reference to a Street View panorama fragment in order to display Street View imagery in the app
+     * Retrieving a boolean extra value named twoPlayers from the intent that started this activity.
+     * The twoPlayers variable will be used for the MapsActivity to define if the game is for two players or not.
      *
      * @param savedInstanceState If the activity is being re-initialized after
      *                           previously being shut down then this Bundle contains the data it most
@@ -42,7 +43,7 @@ public class StreetViewActivity extends AppCompatActivity implements OnStreetVie
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         twoPlayers = getIntent()
-                .getBooleanExtra("twoPlayers",false);
+                .getBooleanExtra("twoPlayers", false);
         mapManagementService = new MapManagementService(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -60,10 +61,10 @@ public class StreetViewActivity extends AppCompatActivity implements OnStreetVie
      */
     @Override
     public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
-        CityHttpClient cityHttpClient = new CityHttpClient();
-        UserHttpClient userHttpClient = new UserHttpClient();
-        userHttpClient.createUser();
-        LatLng unknownCityLatLng = mapManagementService.findCityLatLang(cityHttpClient.getRandomCity().getName(), this);
+//        CityHttpClient cityHttpClient = new CityHttpClient();
+//        UserHttpClient userHttpClient = new UserHttpClient();
+//        userHttpClient.createUser();
+        LatLng unknownCityLatLng = mapManagementService.findCityLatLang("Sofia", this);
         this.unknownCityToGuessCityLatLng = new UnknownCityToGuessCityLatLng(unknownCityLatLng);
         streetViewPanorama.setPosition(unknownCityToGuessCityLatLng.getUnknownCityLatLng(), StreetViewSource.OUTDOOR);
         streetViewPanorama.setStreetNamesEnabled(true);
@@ -86,15 +87,20 @@ public class StreetViewActivity extends AppCompatActivity implements OnStreetVie
         goToMapsActivity();
     }
 
+    /**
+     used to manage the countdown timer in an Android application.
+     It initializes a new CountDownTimer object with a duration of 2 minutes and an interval of 1 second*/
     private void timerManagement() {
         TextView textView = findViewById(R.id.timer);
 
         long duration = TimeUnit.MINUTES.toMillis(1);
-        this.countDownTimer = new CountDownTimer(duration, 1000) {
+        this.countDownTimer = new CountDownTimer(duration, 2000) {
             int counter = 0;
 
             /**
              * When tick, convert millisecond to minute and second
+             * This method updates the text of a TextView with the remaining time in minutes and seconds format.
+             * If the remaining time is less than 10 seconds, it increases the size of the TextView and centers it on the screen.
              * @param millisUntilFinished The amount of time until finished.
              */
             @Override
@@ -120,26 +126,38 @@ public class StreetViewActivity extends AppCompatActivity implements OnStreetVie
 
             /**
              *When finish hide text view and display toast with message
+             * It then calls the goToMapsActivity() method to navigate to the MapsActivity
              */
             @Override
             public void onFinish() {
                 textView.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(), "Времето свърши!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), StringConstants.TIME_IS_UP, Toast.LENGTH_LONG).show();
                 goToMapsActivity();
             }
         }.start();
     }
 
+    /**
+     * The method is used to cancel the countdown timer when the activity is being paused so the
+     * timer won't last in the next activities.
+     */
     @Override
     protected void onPause() {
         super.onPause();
         countDownTimer.cancel();
     }
 
+    /**
+     * Used to navigate to the MapsActivity class from the current StreetViewActivity class.
+     * It creates an Intent object and sets the destination activity to MapsActivity.
+     * It passes the unknownCityToGuessCityLatLng object and a boolean twoPlayers which
+     * shows if the game is for two players or for one
+     */
+
     private void goToMapsActivity() {
         Intent intent = new Intent(StreetViewActivity.this, MapsActivity.class);
         intent.putExtra("unknownCityToGuessCityLatLng", unknownCityToGuessCityLatLng);
-        intent.putExtra("twoPlayers",twoPlayers);
+        intent.putExtra("twoPlayers", twoPlayers);
         startActivity(intent);
     }
 }
