@@ -3,7 +3,6 @@ package com.example.geoguesserjava;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.text.Html;
 import android.view.Gravity;
 import android.view.ViewGroup;
 
@@ -21,7 +20,7 @@ public class DialogsService {
      * @param context      provides a way to access the resources and features of the application
      */
     public static void errorDialog(String errorMessage, Context context) {
-        AlertDialog dialog = baseDialog("Грешка !!!", "Съобщение: " + errorMessage, "OK", context, null);
+        AlertDialog dialog = baseDialog(StringConstants.ERROR, StringConstants.MESSAGE + errorMessage, StringConstants.OK, context, null);
         dialog.show();
     }
 

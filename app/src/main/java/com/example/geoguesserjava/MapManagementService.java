@@ -44,7 +44,7 @@ public class MapManagementService {
             }  // handle case where no addresses were returned
             else throw new IOException();
         } catch (IOException e) {
-            DialogsService.errorDialog("Не можем да намерим локацията на този град", context);
+            DialogsService.errorDialog(StringConstants.CITY_NOT_FOUND_ERROR, context);
             return centerOfBulgaria;
         }
 
