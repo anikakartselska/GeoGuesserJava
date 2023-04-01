@@ -68,7 +68,7 @@ public class StreetViewActivity extends AppCompatActivity implements OnStreetVie
 //        userHttpClient.updateUser();
 //        userHttpClient.getAllUsers();
 //        userHttpClient.logoutUser();
-//        userHttpClient.loginUser();
+        userHttpClient.loginUser("johndoe###password123");
         LatLng unknownCityLatLng = mapManagementService.findCityLatLang(cityHttpClient.getRandomCity().getName(), this);
         this.unknownCityToGuessCityLatLng = new UnknownCityToGuessCityLatLng(unknownCityLatLng);
         streetViewPanorama.setPosition(unknownCityToGuessCityLatLng.getUnknownCityLatLng(), StreetViewSource.OUTDOOR);
