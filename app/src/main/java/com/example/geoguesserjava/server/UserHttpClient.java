@@ -1,9 +1,11 @@
 package com.example.geoguesserjava.server;
 
 import com.example.geoguesserjava.entity.user.CreateUserDto;
+import com.example.geoguesserjava.entity.user.LoggedInUser;
 import com.example.geoguesserjava.entity.user.UpdateUserDto;
 import com.example.geoguesserjava.entity.user.User;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -11,6 +13,9 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class UserHttpClient {
+
+    private static final LoggedInUser loggedInUser = new LoggedInUser();
+    GsonBuilder gsonBuilder = new GsonBuilder();
 
     private static final Gson GSON = new Gson();
     private static final String CREATE_USER = "user/create";
@@ -26,7 +31,7 @@ public class UserHttpClient {
 
     private static final String GET = "GET";
 
-    public void createUser(CreateUserDto user) { //        CreateUserDto user  = new CreateUserDto("password", "john222sadadoe@example.com", "John", "Doe", "johndoe");
+    public User createUser(CreateUserDto user) { //        CreateUserDto user  = new CreateUserDto("password", "john222sadadoe@example.com", "John", "Doe", "johndoe");
         SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
         springServerAsyncTask.execute(POST, CREATE_USER, GSON.toJson(user));
         String result = null;
@@ -35,7 +40,9 @@ public class UserHttpClient {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        System.out.println(result);
+        User createdUser = parseUser(result);
+        loggedInUser.setCurrentUser(createdUser);
+        return createdUser;
     }
 
     public User loginUser(String usernameAndPassSeparatedWith3Hashtags) {//usernameAndPassSeparatedWith3Hashtags  = "johndoe###password";
@@ -47,7 +54,9 @@ public class UserHttpClient {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        return parseUser(result);
+        User user = parseUser(result);
+        loggedInUser.setCurrentUser(user);
+        return user;
     }
 
 
@@ -84,7 +93,16 @@ public class UserHttpClient {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        System.out.println(result);
+        if(result != null && result.equals("Logged out successfully!")) {
+            loggedInUser.setCurrentUser(null);
+            System.out.println(result);
+        }else{
+            System.out.println("Error logging out!");
+        }
+    }
+
+    public LoggedInUser getLoggedInUser() {
+        return loggedInUser;
     }
 
     /**

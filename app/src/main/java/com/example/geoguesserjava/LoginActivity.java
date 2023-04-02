@@ -5,9 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+
+import com.example.geoguesserjava.server.UserHttpClient;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static final UserHttpClient userHttpClient = new UserHttpClient();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,13 +28,19 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginClick(View view) {
         Intent intent = new Intent(LoginActivity.this, UserScreenActivity.class);
-        startActivity(intent);
-//        AllUsersActivity myDialog = new AllUsersActivity(this);
-//
-//        // set any necessary properties of the dialog, such as a title
-//        myDialog.setTitle("Потребители");
-//        // show the dialog
-//        myDialog.show();
+        EditText editTextUsername = findViewById(R.id.username);
+        EditText editTextPassword = findViewById(R.id.password);
+        String username = editTextUsername.getText().toString();
+        String password = editTextPassword.getText().toString();
+        String usernameAndPassword = username + "###" + password;
+
+        userHttpClient.loginUser(usernameAndPassword);
+
+        if(userHttpClient.getLoggedInUser().getCurrentUser() == null){
+            System.out.println("Error logging in!");
+        }else{
+            startActivity(intent);
+        }
     }
 
     public void onSignUpClick(View view) {
