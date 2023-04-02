@@ -41,6 +41,14 @@ public class User {
     public User() {
     }
 
+    public User(Integer level, Double points, String firstName, String lastName, String username) {
+        this.level = level;
+        this.points = points;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+    }
+
     public Long getId() {
         return id;
     }

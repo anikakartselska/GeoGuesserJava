@@ -21,13 +21,21 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:usesCleartextTraffic="true"
         android:label="Познай България"
         android:supportsRtl="true"
         android:theme="@style/Theme.GeoGuesserJava"
-        tools:targetApi="31" >
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+        <activity
+            android:name=".AllUsersActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Dialog"
+            />
         <activity
             android:name=".UserScreenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SignUpActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
