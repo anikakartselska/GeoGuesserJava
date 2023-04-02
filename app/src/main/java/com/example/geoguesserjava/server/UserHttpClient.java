@@ -27,6 +27,10 @@ public class UserHttpClient {
 
     private static final String USER_UPDATE = "user/update";
 
+    private static final String EMAIL_EXISTS = "user/email-exists";
+
+    private static final String USERNAME_EXISTS = "user/username-exists";
+
     private static final String POST = "POST";
 
     private static final String GET = "GET";
@@ -70,6 +74,29 @@ public class UserHttpClient {
             e.printStackTrace();
         }
         return parseUser(result);
+    }
+    public Boolean usernameExists(String username) { // UpdateUserDto user  = new UpdateUserDto(1L, 1, 69.77, null);
+        SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
+        springServerAsyncTask.execute(POST, USERNAME_EXISTS, username);
+        String result = "";
+        try {
+            result = springServerAsyncTask.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return result.equals("true");
+    }
+
+    public Boolean emailExists(String email) { // UpdateUserDto user  = new UpdateUserDto(1L, 1, 69.77, null);
+        SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
+        springServerAsyncTask.execute(POST, EMAIL_EXISTS, email);
+        String result = "";
+        try {
+            result = springServerAsyncTask.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return result.equals("true");
     }
 
     public List<User> getAllUsers() {

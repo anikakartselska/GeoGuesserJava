@@ -41,9 +41,13 @@ public class SignUpActivity extends AppCompatActivity {
 
         if (!email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
             errorMessages.add("Invalid email address");
+        }else if (userHttpClient.emailExists(email)){
+            errorMessages.add("USER WITH THIS EMAIL ALREADY EXISTS");
         }
 
-        if (!username.matches("[a-zA-Z0-9_-]{3,15}")) {
+        if(userHttpClient.usernameExists(username)){
+            errorMessages.add("USER WITH THIS USERNAME ALREADY EXISTS");
+        }else if(!username.matches("[a-zA-Z0-9_-]{3,15}")) {
             errorMessages.add("Username must be between 3 and 15 characters and can only contain letters, numbers, hyphens and underscores");
         }
 
