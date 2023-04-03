@@ -16,12 +16,15 @@ import com.example.geoguesserjava.entity.user.UpdateUserDto;
 import com.example.geoguesserjava.server.UserHttpClient;
 
 import java.io.ByteArrayInputStream;
+import com.example.geoguesserjava.server.UserHttpClient;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class UserScreenActivity extends AppCompatActivity {
     private ImageView userPhoto;
 
+    private static final UserHttpClient userHttpClient = new UserHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,6 @@ public class UserScreenActivity extends AppCompatActivity {
      * which is called when an activity launched with startActivityForResult completes and returns a result.
      * This method handles the result of the photo picker screen launched by the selectPhotoClick
      * method and sets the selected photo as the user's profile photo.
-     *
      * @param requestCode The integer request code originally supplied to
      *                    startActivityForResult(), allowing you to identify who this
      *                    result came from.
@@ -138,6 +140,7 @@ public class UserScreenActivity extends AppCompatActivity {
         DialogsService.messageDialog(StringConstants.EXIT, StringConstants.ARE_YOU_SURE_YOU_WANT_TO_LEAVE
                 , StringConstants.YES, this, (dialog, which) -> {
                     Intent intent = new Intent(this, LoginActivity.class);
+                    userHttpClient.logoutUser();
                     startActivity(intent);
                 });
     }
