@@ -150,10 +150,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     /**
      * The showDialogAfterGuess() method is a private method that is called within the OnShowIfGuessedClick() method. It is responsible for creating a dialog box that displays the results of the player's guess. The dialog box contains information about the distance between the guessed city and the actual city, as well as the number of points earned by the player based on their guess.
-     *
+     * <p>
      * If the game is being played between two players, the method calculates the distance between the first player's guess and the actual city, and then calculates the distance between the second player's guess and the actual city. It then determines which player was closer to the actual city and displays a message indicating the winner.
-     *
+     * <p>
      * The method also provides a button for the user to go to the user screen activity.
+     *
      * @param unknownCityToGuessCityLatLng
      * @param guessCityOfTheFirstPlayerInTwoPlayerGame
      * @param username
@@ -224,5 +225,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return (500 - kilometers) / userLevel;
     }
 
+    private int calculateUserLevel(int userLevel, float points) {
+        return points >= 1000.0 ? ++userLevel : userLevel;
+    }
+
+    private float calculateUserPoints(float points) {
+        return points >= 1000.0 ? (float) (points - 1000.0) : points;
+    }
 }
 

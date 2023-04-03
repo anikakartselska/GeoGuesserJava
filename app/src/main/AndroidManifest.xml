@@ -26,11 +26,11 @@
         android:theme="@style/Theme.GeoGuesserJava"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".AllUsersActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.Dialog"
-            />
+<!--        <activity-->
+<!--            android:name=".AllUsersActivity"-->
+<!--            android:exported="false"-->
+<!--            android:theme="@style/Theme.AppCompat.Dialog"-->
+<!--            />-->
         <activity
             android:name=".UserScreenActivity"
             android:exported="false" />

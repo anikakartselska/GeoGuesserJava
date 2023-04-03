@@ -25,12 +25,6 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginClick(View view) {
         Intent intent = new Intent(LoginActivity.this, UserScreenActivity.class);
         startActivity(intent);
-//        AllUsersActivity myDialog = new AllUsersActivity(this);
-//
-//        // set any necessary properties of the dialog, such as a title
-//        myDialog.setTitle("Потребители");
-//        // show the dialog
-//        myDialog.show();
     }
 
     public void onSignUpClick(View view) {

@@ -4,13 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
-import android.widget.Button;
+import android.util.Base64;
 import android.widget.ImageView;
 
+import com.example.geoguesserjava.entity.user.UpdateUserDto;
+import com.example.geoguesserjava.server.UserHttpClient;
+
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -43,17 +48,18 @@ public class UserScreenActivity extends AppCompatActivity {
      * which is called when an activity launched with startActivityForResult completes and returns a result.
      * This method handles the result of the photo picker screen launched by the selectPhotoClick
      * method and sets the selected photo as the user's profile photo.
+     *
      * @param requestCode The integer request code originally supplied to
      *                    startActivityForResult(), allowing you to identify who this
      *                    result came from.
-     * @param resultCode The integer result code returned by the child activity
-     *                   through its setResult().
-     * @param data An Intent, which can return result data to the caller
-     *               (various data can be attached to Intent "extras").
-     *
+     * @param resultCode  The integer result code returned by the child activity
+     *                    through its setResult().
+     * @param data        An Intent, which can return result data to the caller
+     *                    (various data can be attached to Intent "extras").
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        UserHttpClient userHttpClient = new UserHttpClient();
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
@@ -63,8 +69,14 @@ public class UserScreenActivity extends AppCompatActivity {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
                 byte[] imageBytes = baos.toByteArray();
+
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+
+                userHttpClient.updateUser(new UpdateUserDto(1L,1,0.00,imageBytes));
 
                 // Now you can save the imageBytes to your database
             } catch (IOException e) {
@@ -87,6 +99,15 @@ public class UserScreenActivity extends AppCompatActivity {
                     startActivity(intent);
                 });
     }
+
+    public void onOpenAllUsers(View view) {
+        AllUsersDialog myDialog = new AllUsersDialog(this);
+        // set any necessary properties of the dialog, such as a title
+        myDialog.setTitle("Потребители");
+        // show the dialog
+        myDialog.show();
+    }
+
 
     /**
      * The method displays a message dialog to the user, presenting the game rules and asking them

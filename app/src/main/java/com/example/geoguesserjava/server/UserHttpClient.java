@@ -3,7 +3,9 @@ package com.example.geoguesserjava.server;
 import com.example.geoguesserjava.entity.user.CreateUserDto;
 import com.example.geoguesserjava.entity.user.UpdateUserDto;
 import com.example.geoguesserjava.entity.user.User;
+import com.example.geoguesserjava.entity.user.UserDeserializer;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -96,7 +98,10 @@ public class UserHttpClient {
     private static User parseUser(String response) {
         User user = null;
         try {
-            user = GSON.fromJson(response, User.class);
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(User.class, new UserDeserializer());
+            Gson gson = gsonBuilder.create();
+            user = gson.fromJson(response, User.class);
         } catch (Exception e) {
             System.out.println(response);
         }
@@ -115,7 +120,10 @@ public class UserHttpClient {
         try {
             Type userListType = new TypeToken<List<User>>() {
             }.getType();
-            users = GSON.fromJson(response, userListType);
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(User.class, new UserDeserializer());
+            Gson gson = gsonBuilder.create();
+            users = gson.fromJson(response, userListType);
         } catch (Exception e) {
             System.out.println(response);
         }

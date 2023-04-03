@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:minWidth="413dp"
     android:minHeight="311dp"
-    tools:context=".AllUsersActivity">
+    tools:context=".AllUsersDialog">
 
     <ScrollView
         android:id="@+id/schrollView4"
@@ -24,51 +24,59 @@
             android:id="@+id/all_users_table"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="0,1,2,3,4"
-          >
+            android:stretchColumns="0,1,2,3,4">
 
             <TableRow>
 
                 <TextView
                     android:layout_weight="1"
                     android:background="@drawable/border"
+                    android:gravity="center"
                     android:padding="4dp"
                     android:text="Потребителско име"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
 
-<!--                <TextView-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:background="@drawable/border"-->
-<!--                    android:padding="4dp"-->
-<!--                    android:text="Първо име"-->
-<!--                    android:textColor="@color/black" />-->
+                <!--                <TextView-->
+                <!--                    android:layout_weight="1"-->
+                <!--                    android:background="@drawable/border"-->
+                <!--                    android:padding="4dp"-->
+                <!--                    android:text="Първо име"-->
+                <!--                    android:textColor="@color/black" />-->
 
-<!--                <TextView-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:background="@drawable/border"-->
-<!--                    android:padding="4dp"-->
-<!--                    android:text="Второ име"-->
-<!--                    android:textColor="@color/black" />-->
+                <!--                <TextView-->
+                <!--                    android:layout_weight="1"-->
+                <!--                    android:background="@drawable/border"-->
+                <!--                    android:padding="4dp"-->
+                <!--                    android:text="Второ име"-->
+                <!--                    android:textColor="@color/black" />-->
 
                 <TextView
                     android:layout_weight="1"
                     android:background="@drawable/border"
+                    android:gravity="center"
                     android:padding="4dp"
                     android:text="Ниво"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
 
                 <TextView
                     android:layout_weight="1"
                     android:background="@drawable/border"
+                    android:gravity="center"
                     android:padding="4dp"
                     android:text="Точки"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
                 <TextView
                     android:layout_weight="1"
                     android:background="@drawable/border"
+                    android:gravity="center"
                     android:padding="4dp"
                     android:text="Снимка"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
             </TableRow>
             <!-- Additional rows go here -->
         </TableLayout>
