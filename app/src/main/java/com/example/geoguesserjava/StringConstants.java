@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 
+import com.example.geoguesserjava.entity.user.LoggedInUser;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
@@ -23,7 +24,7 @@ public class StringConstants {
 
     public static final String TIME_IS_UP = "Времето свърши!";
 
-    public static final String USERNAME = "Username";
+    public static final String USERNAME = LoggedInUser.getCurrentUser().getUsername();
 
     public static final String EXIT = "Изход";
 
@@ -31,7 +32,7 @@ public class StringConstants {
 
     public static final String YES = "Да";
 
-    public static final String GAME_RULES_TITLE ="Правила на играта";
+    public static final String GAME_RULES_TITLE = "Правила на играта";
 
     public static final String BEGIN = "Започни";
 
@@ -43,7 +44,7 @@ public class StringConstants {
             "Не забравяй,че играта е само в границите на България.";
 
 
-    public static String constructMessageForThePlayerResults(String playerName, float kilometers, float points) {
+    public static String constructMessageForThePlayerResults(String playerName, Double kilometers, Double points) {
         String htmlMessage = "<b>%s:</b><br><i><b>Разлика в разтоянието:</b></i> %.2f км.<br><i><b>Спечелени точки: </b></i> %.2f<br>";
         return String.format(htmlMessage, playerName, kilometers, points);
     }
@@ -67,8 +68,25 @@ public class StringConstants {
 
 // Create a BitmapDescriptor object from the bitmap with the desired tint
         return BitmapDescriptorFactory.fromBitmap(bitmap);
-
-
     }
 
+    public static String pointsToNextLevelText(Double pointsToNextLevel) {
+        String text = "Точки до следващото ниво: %.2f";
+        return String.format(text, pointsToNextLevel);
+    }
+
+    public static String pointsText(Double points) {
+        String text = "Точките ти: %.2f";
+        return String.format(text,points);
+    }
+
+    public static String levelText(Integer level) {
+        String text = "Твоето ниво: %d";
+        return String.format(text,level);
+    }
+
+    public static String welcomeText(String firstName) {
+        String text = "Добре дошъл, %s!";
+        return String.format(text,firstName);
+    }
 }

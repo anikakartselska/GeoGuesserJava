@@ -15,9 +15,10 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.geoguesserjava.entity.user.User;
-import com.example.geoguesserjava.server.UserHttpClient;
+
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 
 public class AllUsersDialog extends AppCompatDialog {
@@ -29,13 +30,24 @@ public class AllUsersDialog extends AppCompatDialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_users);
-        UserHttpClient userHttpClient = new UserHttpClient();
-        List<User> users = userHttpClient.getAllUsers();
+        List<User> users = BulgariaGuesserApplication.usersCache.get("users");
         Context context = getContext();
         TableLayout tableLayout = findViewById(R.id.all_users_table);
         tableLayout.setBackgroundColor(Color.WHITE);
-        for (User user : users) {
+        IntStream.range(0, users.size() - 1).forEach(i ->
+        {
+            User user = users.get(i);
             TableRow tableRow = new TableRow(context);
+
+            TextView numberTextView = new TextView(context);
+            numberTextView.setText(String.valueOf(i));
+            numberTextView.setPadding(8, 8, 8, 8);
+            numberTextView.setGravity(Gravity.CENTER);
+            numberTextView.setTextSize(20);
+            numberTextView.setBackground(context.getResources().getDrawable(R.drawable.cell_boarder));
+            TableRow.LayoutParams numberParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 200); // set the height to 100 pixels
+            numberTextView.setLayoutParams(numberParams);
+            tableRow.addView(numberTextView);
 
             TextView usernameTextView = new TextView(context);
             usernameTextView.setText(String.valueOf(user.getUsername()));
@@ -82,6 +94,6 @@ public class AllUsersDialog extends AppCompatDialog {
             tableRow.addView(imageView);
 
             tableLayout.addView(tableRow);
-        }
+        });
     }
 }

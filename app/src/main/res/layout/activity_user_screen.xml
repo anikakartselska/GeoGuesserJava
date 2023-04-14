@@ -65,35 +65,32 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView3"
-                android:layout_width="290dp"
-                android:layout_height="39dp"
+                android:id="@+id/pointsToNextLevel"
+                android:layout_width="294dp"
+                android:layout_height="49dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="280dp"
-                android:text="Точки до следващото ниво: 1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView7"
-                android:layout_width="160dp"
+                android:id="@+id/userPoints"
+                android:layout_width="251dp"
                 android:layout_height="35dp"
-                android:layout_marginStart="84dp"
+                android:layout_marginStart="40dp"
                 android:layout_marginTop="220dp"
-                android:text="Точките ти: 100"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView6"
-                android:layout_width="163dp"
-                android:layout_height="26dp"
+                android:id="@+id/userLevel"
+                android:layout_width="251dp"
+                android:layout_height="31dp"
                 android:layout_marginTop="168dp"
-                android:text="Твоето ниво: 1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -101,11 +98,10 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/register_text"
+                android:id="@+id/welcomeUser"
                 android:layout_width="303dp"
                 android:layout_height="72dp"
                 android:layout_marginTop="16dp"
-                android:text="Добре дошъл, юзър !"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textSize="30sp"

@@ -74,7 +74,9 @@ public class UserHttpClient {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        return parseUser(result);
+        User updatedUser = parseUser(result);
+        loggedInUser.setCurrentUser(updatedUser);
+        return updatedUser;
     }
     public Boolean usernameExists(String username) { // UpdateUserDto user  = new UpdateUserDto(1L, 1, 69.77, null);
         SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();

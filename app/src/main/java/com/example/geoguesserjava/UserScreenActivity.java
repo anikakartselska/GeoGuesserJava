@@ -11,11 +11,14 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.util.Base64;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.example.geoguesserjava.entity.user.LoggedInUser;
 import com.example.geoguesserjava.entity.user.UpdateUserDto;
 import com.example.geoguesserjava.server.UserHttpClient;
 
 import java.io.ByteArrayInputStream;
+
 import com.example.geoguesserjava.server.UserHttpClient;
 
 import java.io.ByteArrayOutputStream;
@@ -31,7 +34,21 @@ public class UserScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_screen);
         userPhoto = findViewById(R.id.imageView2);
-
+        TextView pointsToNextLevelText = findViewById(R.id.pointsToNextLevel);
+        pointsToNextLevelText.setText(StringConstants.pointsToNextLevelText(1000 - LoggedInUser.getCurrentUser().getPoints()));
+        TextView pointsText = findViewById(R.id.userPoints);
+        pointsText.setText(StringConstants.pointsText(LoggedInUser.getCurrentUser().getPoints()));
+        TextView levelText = findViewById(R.id.userLevel);
+        levelText.setText(StringConstants.levelText(LoggedInUser.getCurrentUser().getLevel()));
+        TextView welcomeText = findViewById(R.id.welcomeUser);
+        welcomeText.setText(StringConstants.welcomeText(LoggedInUser.getCurrentUser().getFirstName()));
+        if (LoggedInUser.getCurrentUser().getImage() == null || LoggedInUser.getCurrentUser().getImage().length == 0) {
+            userPhoto.setImageResource(R.drawable.baseline_person_24); // set the image resource
+        } else {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(LoggedInUser.getCurrentUser().getImage(), 0, LoggedInUser.getCurrentUser().getImage().length);
+            userPhoto.setImageBitmap(bitmap);
+            userPhoto.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        }
 
     }
 
@@ -51,6 +68,7 @@ public class UserScreenActivity extends AppCompatActivity {
      * which is called when an activity launched with startActivityForResult completes and returns a result.
      * This method handles the result of the photo picker screen launched by the selectPhotoClick
      * method and sets the selected photo as the user's profile photo.
+     *
      * @param requestCode The integer request code originally supplied to
      *                    startActivityForResult(), allowing you to identify who this
      *                    result came from.
@@ -78,7 +96,7 @@ public class UserScreenActivity extends AppCompatActivity {
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inJustDecodeBounds = true;
 
-                userHttpClient.updateUser(new UpdateUserDto(1L,1,0.00,imageBytes));
+                userHttpClient.updateUser(new UpdateUserDto(1L, 1, 0.00, imageBytes));
 
                 // Now you can save the imageBytes to your database
             } catch (IOException e) {
@@ -105,7 +123,7 @@ public class UserScreenActivity extends AppCompatActivity {
     public void onOpenAllUsers(View view) {
         AllUsersDialog myDialog = new AllUsersDialog(this);
         // set any necessary properties of the dialog, such as a title
-        myDialog.setTitle("Потребители");
+        myDialog.setTitle("Играчи");
         // show the dialog
         myDialog.show();
     }

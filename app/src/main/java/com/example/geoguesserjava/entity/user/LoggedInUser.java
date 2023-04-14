@@ -3,7 +3,7 @@ package com.example.geoguesserjava.entity.user;
 public class LoggedInUser {
     private static User currentUser = new User();
 
-    public User getCurrentUser() {
+    public static User getCurrentUser() {
         return currentUser;
     }
 

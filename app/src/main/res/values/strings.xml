@@ -3,4 +3,5 @@
     <string name="title_activity_maps">MapsActivity</string>
     <string name="open_maps_to_select_location">Отвори картата, за да познаеш локацията</string>
     <string name="try_to_quess">Опитай да познаеш</string>
+    <string name="registerButtonText">Регистрирай се</string>
 </resources>

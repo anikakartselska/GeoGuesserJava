@@ -8,28 +8,42 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.geoguesserjava.entity.user.CreateUserDto;
+import com.example.geoguesserjava.entity.user.LoggedInUser;
 import com.example.geoguesserjava.server.UserHttpClient;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SignUpActivity extends AppCompatActivity {
 
     private static final UserHttpClient userHttpClient = new UserHttpClient();
+    EditText editTextUsername, editFirstName, editLastName, editEmailText, editTextPassword;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
+         editTextUsername = findViewById(R.id.username_signup_txt);
+         editFirstName = findViewById(R.id.first_name_txt);
+         editLastName = findViewById(R.id.last_name_txt);
+         editEmailText = findViewById(R.id.email_txt);
+         editTextPassword = findViewById(R.id.type_pass_txt);
     }
 
     public void onRegistrationClick(View view) {
         Intent intent = new Intent(this, UserScreenActivity.class);
 
-        EditText editTextUsername = findViewById(R.id.username_signup_txt);
-        EditText editFirstName = findViewById(R.id.first_name_txt);
-        EditText editLastName = findViewById(R.id.last_name_txt);
-        EditText editEmailText = findViewById(R.id.email_txt);
-        EditText editTextPassword = findViewById(R.id.type_pass_txt);
+        CreateUserDto createUserDto = CheckAllFieldsAndGetCreateUserDto();
+
+        if (createUserDto != null) {
+            userHttpClient.createUser(createUserDto);
+            if (LoggedInUser.getCurrentUser() == null) {
+                DialogsService.errorDialog("Невалиден е-майл или парола", this);
+            } else {
+                startActivity(intent);
+            }
+        }
+
+    }
+
+    private CreateUserDto CheckAllFieldsAndGetCreateUserDto() {
 
         String email = editEmailText.getText().toString();
         String username = editTextUsername.getText().toString();
@@ -37,47 +51,37 @@ public class SignUpActivity extends AppCompatActivity {
         String lastName = editLastName.getText().toString();
         String pass = editTextPassword.getText().toString();
 
-        List<String> errorMessages = new ArrayList<>();
-
-        if (!email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
-            errorMessages.add("Invalid email address");
-        }else if (userHttpClient.emailExists(email)){
-            errorMessages.add("USER WITH THIS EMAIL ALREADY EXISTS");
+        if (!username.matches("[a-zA-Z0-9_-]{3,15}")) {
+            editTextUsername.setError("Потребителското име трябва да е между 3 и 15 знака и може да съдържа само букви, цифри, тирета и подчертавки.");
+            return null;
+        } else if (userHttpClient.usernameExists(username)) {
+            editTextUsername.setError("Потребител с такова потребителско име вече съществува");
+            return null;
         }
 
-        if(userHttpClient.usernameExists(username)){
-            errorMessages.add("USER WITH THIS USERNAME ALREADY EXISTS");
-        }else if(!username.matches("[a-zA-Z0-9_-]{3,15}")) {
-            errorMessages.add("Username must be between 3 and 15 characters and can only contain letters, numbers, hyphens and underscores");
+        if (!email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
+            editEmailText.setError("Невалиден е-майл адрес");
+            return null;
+        } else if (userHttpClient.emailExists(email)) {
+            editEmailText.setError("Потребител с такъв е-майл вече съществува");
+            return null;
         }
 
         if (!firstName.matches("[a-zA-Z]{3,15}")) {
-            errorMessages.add("First name must be between 3 and 15 characters and can only contain letters");
+            editFirstName.setError("Името трябва да е между 3 и 15 знака и може да съдържа само букви.");
+            return null;
         }
 
         if (!lastName.matches("[a-zA-Z]{3,15}")) {
-            errorMessages.add("Last name must be between 3 and 15 characters and can only contain letters");
+            editLastName.setError("Фамилията трябва да е между 3 и 15 знака и може да съдържа само букви.");
+            return null;
         }
 
         if (!pass.matches("(?!.*#)[a-zA-Z0-9]{5,15}")) {
-            errorMessages.add("Password must be between 5 and 15 characters and cannot contain the '#' character");
+            editTextPassword.setError("Паролата трябва да е между 5 и 15 знака и не може да съдържа символа '#'.");
+            return null;
         }
-
-        if(errorMessages.size() > 0){
-            errorMessages.forEach(System.out::println);
-        }else{
-            CreateUserDto createUserDto = new CreateUserDto(pass, email, firstName, lastName, username);
-
-            userHttpClient.createUser(createUserDto);
-
-            if(userHttpClient.getLoggedInUser().getCurrentUser() == null){
-                System.out.println("Error logging in!");
-            }else{
-                errorMessages = new ArrayList<>();
-                startActivity(intent);
-            }
-        }
-
+        return new CreateUserDto(pass, email, firstName, lastName, username);
     }
 
     public void onGoBackClick(View view) {

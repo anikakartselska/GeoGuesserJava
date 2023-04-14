@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.geoguesserjava.entity.user.LoggedInUser;
 import com.example.geoguesserjava.server.UserHttpClient;
 
 public class LoginActivity extends AppCompatActivity {
@@ -36,8 +37,8 @@ public class LoginActivity extends AppCompatActivity {
 
         userHttpClient.loginUser(usernameAndPassword);
 
-        if(userHttpClient.getLoggedInUser().getCurrentUser() == null){
-            System.out.println("Error logging in!");
+        if(LoggedInUser.getCurrentUser() == null){
+            DialogsService.errorDialog("Невалиден е-майл или парола",this);
         }else{
             startActivity(intent);
         }

@@ -57,10 +57,10 @@ public class MapManagementService {
      * @param latLng2 the latitude and longitude of the second city
      * @return the distance in kilometers
      */
-    public float findDistanceBetweenTwoCitiesInKilometers(LatLng latLng1, LatLng latLng2) {
+    public Double findDistanceBetweenTwoCitiesInKilometers(LatLng latLng1, LatLng latLng2) {
         float[] results = new float[1];
         Location.distanceBetween(latLng1.latitude, latLng1.longitude, latLng2.latitude, latLng2.longitude, results);
-        return results[0] / 1000;
+        return (double) results[0] / 1000;
     }
 
     /**
