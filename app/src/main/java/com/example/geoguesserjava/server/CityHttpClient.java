@@ -9,6 +9,8 @@ public class CityHttpClient {
 
     private static final String GET_RANDOM_CITY = "city/random";
 
+    private static final String GET_RANDOM_CITY_ALL_LEVEL = "city/random/all-levels";
+
     private static final String GET = "GET";
     private static final Gson GSON = new Gson();
 
@@ -16,6 +18,20 @@ public class CityHttpClient {
         City city = null;
         SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
         springServerAsyncTask.execute(GET, GET_RANDOM_CITY);
+        String result = null;
+        try {
+            result = springServerAsyncTask.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        city = parseCity(result);
+        return city;
+    }
+
+    public City getRandomCityFromAnyLevel(){
+        City city = null;
+        SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
+        springServerAsyncTask.execute(GET, GET_RANDOM_CITY_ALL_LEVEL);
         String result = null;
         try {
             result = springServerAsyncTask.get();
