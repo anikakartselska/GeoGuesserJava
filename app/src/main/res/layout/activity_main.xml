@@ -14,10 +14,6 @@
         android:layout_centerInParent="true"
         tools:layout="@layout/activity_main">
     </androidx.fragment.app.FragmentContainerView>
-<!--        <TextView-->
-<!--            android:id="@+id/distance"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent" />-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,6 +27,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/open_maps_activity"
             android:onClick="OnOpenMapsActivityClick"
-            android:text="@string/open_maps_to_select_location"/>
+            android:text="@string/open_maps_to_select_location"
+            android:background="@drawable/buttongradient"
+            android:textColor="@color/white"/>
 
 </RelativeLayout>

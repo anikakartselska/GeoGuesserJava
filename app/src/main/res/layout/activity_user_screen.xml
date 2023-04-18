@@ -44,23 +44,27 @@
 
             <Button
                 android:id="@+id/start_game_for_two_button"
-                android:layout_width="218dp"
-                android:layout_height="57dp"
+                android:layout_width="222dp"
+                android:layout_height="53dp"
                 android:layout_marginStart="52dp"
-                android:layout_marginTop="380dp"
+                android:layout_marginTop="428dp"
+                android:background="@drawable/buttongradient"
                 android:onClick="onStartTwoPlayersGameClick"
                 android:text="Започни игра за двама"
+                android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/start_game_button"
-                android:layout_width="220dp"
-                android:layout_height="47dp"
+                android:layout_width="221dp"
+                android:layout_height="46dp"
                 android:layout_marginStart="52dp"
-                android:layout_marginTop="336dp"
+                android:layout_marginTop="364dp"
+                android:background="@drawable/buttongradient"
                 android:onClick="onStartGameClick"
                 android:text="Започни игра"
+                android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -73,7 +77,8 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <TextView
                 android:id="@+id/userPoints"
@@ -122,12 +127,14 @@
 
             <Button
                 android:id="@+id/button2"
-                android:layout_width="43dp"
-                android:layout_height="43dp"
-                android:layout_marginStart="176dp"
-                android:layout_marginTop="116dp"
+                android:layout_width="32dp"
+                android:layout_height="31dp"
+                android:layout_marginStart="180dp"
+                android:layout_marginTop="124dp"
+                android:background="@drawable/buttongradient"
                 android:onClick="selectPhotoClick"
                 android:text="+"
+                android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -136,30 +143,35 @@
 
     <Button
         android:id="@+id/logOut"
-        android:layout_width="0dp"
-        android:layout_height="51dp"
+        android:layout_width="105dp"
+        android:layout_height="38dp"
         android:layout_marginEnd="203dp"
         android:layout_marginBottom="43dp"
+        android:background="@drawable/buttongradient"
         android:onClick="onLogoutClick"
         android:text="Изход"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/cardView2"
         app:layout_constraintEnd_toStartOf="@+id/open_all_users"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/open_all_users"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="106dp"
+        android:layout_height="41dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="41dp"
-        android:text="КЛАСАЦИЯ"
+        android:background="@drawable/buttongradient"
         android:onClick="onOpenAllUsers"
+        android:text="КЛАСАЦИЯ"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/cardView2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.963"
         app:layout_constraintStart_toEndOf="@+id/logOut"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

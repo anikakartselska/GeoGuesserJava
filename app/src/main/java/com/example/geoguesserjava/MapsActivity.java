@@ -16,6 +16,7 @@ import com.example.geoguesserjava.databinding.ActivityMapsBinding;
 import com.example.geoguesserjava.entity.user.LoggedInUser;
 import com.example.geoguesserjava.entity.user.UpdateUserDto;
 import com.example.geoguesserjava.entity.user.User;
+import com.example.geoguesserjava.server.Services;
 import com.example.geoguesserjava.server.UserHttpClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -44,7 +45,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private LatLng guessCityOfTheFirstPlayerInTwoPlayerGame = null;
 
-    private UserHttpClient userHttpClient = new UserHttpClient();
+    private UserHttpClient userHttpClient = Services.getUserHttpClient();
 
     public final LatLngBounds bulgariaBounds = new LatLngBounds(
             new LatLng(41.2352, 22.3571), // southwest corner of Bulgaria

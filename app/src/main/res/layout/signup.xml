@@ -122,12 +122,14 @@
 
             <Button
                 android:id="@+id/sign_in_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
+                android:layout_width="117dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="24dp"
                 android:layout_marginBottom="28dp"
+                android:background="@drawable/buttongradient"
                 android:onClick="onRegistrationClick"
                 android:text="Регистрация"
+                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -140,7 +142,9 @@
                 android:onClick="onGoBackClick"
                 android:text="Назад"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:background="@drawable/buttongradient"
+                android:textColor="@color/white"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

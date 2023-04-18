@@ -9,17 +9,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
-import android.util.Base64;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.geoguesserjava.entity.user.LoggedInUser;
 import com.example.geoguesserjava.entity.user.UpdateUserDto;
+import com.example.geoguesserjava.server.Services;
 import com.example.geoguesserjava.server.UserHttpClient;
 
 import java.io.ByteArrayInputStream;
-
-import com.example.geoguesserjava.server.UserHttpClient;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -27,7 +25,7 @@ import java.io.IOException;
 public class UserScreenActivity extends AppCompatActivity {
     private ImageView userPhoto;
 
-    private static final UserHttpClient userHttpClient = new UserHttpClient();
+    private static final UserHttpClient userHttpClient = Services.getUserHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +33,15 @@ public class UserScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_screen);
         userPhoto = findViewById(R.id.imageView2);
         TextView pointsToNextLevelText = findViewById(R.id.pointsToNextLevel);
-        pointsToNextLevelText.setText(StringConstants.pointsToNextLevelText(1000 - LoggedInUser.getCurrentUser().getPoints()));
         TextView pointsText = findViewById(R.id.userPoints);
-        pointsText.setText(StringConstants.pointsText(LoggedInUser.getCurrentUser().getPoints()));
         TextView levelText = findViewById(R.id.userLevel);
-        levelText.setText(StringConstants.levelText(LoggedInUser.getCurrentUser().getLevel()));
         TextView welcomeText = findViewById(R.id.welcomeUser);
+
+        pointsToNextLevelText.setText(StringConstants.pointsToNextLevelText(1000 - LoggedInUser.getCurrentUser().getPoints()));
+        pointsText.setText(StringConstants.pointsText(LoggedInUser.getCurrentUser().getPoints()));
+        levelText.setText(StringConstants.levelText(LoggedInUser.getCurrentUser().getLevel()));
         welcomeText.setText(StringConstants.welcomeText(LoggedInUser.getCurrentUser().getFirstName()));
+
         if (LoggedInUser.getCurrentUser().getImage() == null || LoggedInUser.getCurrentUser().getImage().length == 0) {
             userPhoto.setImageResource(R.drawable.baseline_person_24); // set the image resource
         } else {
@@ -64,7 +64,7 @@ public class UserScreenActivity extends AppCompatActivity {
     }
 
     /**
-     * The code you provided is an implementation of the onActivityResult method,
+     * Implementation of the onActivityResult method,
      * which is called when an activity launched with startActivityForResult completes and returns a result.
      * This method handles the result of the photo picker screen launched by the selectPhotoClick
      * method and sets the selected photo as the user's profile photo.
@@ -79,7 +79,6 @@ public class UserScreenActivity extends AppCompatActivity {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        UserHttpClient userHttpClient = new UserHttpClient();
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {

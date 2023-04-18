@@ -86,7 +86,7 @@ public class StringConstants {
     }
 
     public static String welcomeText(String firstName) {
-        String text = "Добре дошъл, %s!";
+        String text = "Здравей, %s!";
         return String.format(text,firstName);
     }
 }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.geoguesserjava.server.CityHttpClient;
+import com.example.geoguesserjava.server.Services;
 import com.example.geoguesserjava.server.UserHttpClient;
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
@@ -28,6 +29,8 @@ public class StreetViewActivity extends AppCompatActivity implements OnStreetVie
     private MapManagementService mapManagementService;
     private CountDownTimer countDownTimer;
     private UnknownCityToGuessCityLatLng unknownCityToGuessCityLatLng;
+
+    private CityHttpClient cityHttpClient = Services.getCityHttpClient();
     private boolean twoPlayers;
 
     /**
@@ -61,14 +64,6 @@ public class StreetViewActivity extends AppCompatActivity implements OnStreetVie
      */
     @Override
     public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
-        CityHttpClient cityHttpClient = new CityHttpClient();
-        UserHttpClient userHttpClient = new UserHttpClient();
-        //userHttpClient.createUser();
-//        userHttpClient.loginUser();
-//        userHttpClient.updateUser();
-//        userHttpClient.getAllUsers();
-//        userHttpClient.logoutUser();
-        userHttpClient.loginUser("johndoe###password123");
         LatLng unknownCityLatLng = mapManagementService.findCityLatLang(cityHttpClient.getRandomCity().getName(), this);
         this.unknownCityToGuessCityLatLng = new UnknownCityToGuessCityLatLng(unknownCityLatLng);
         streetViewPanorama.setPosition(unknownCityToGuessCityLatLng.getUnknownCityLatLng(), StreetViewSource.OUTDOOR);
@@ -93,8 +88,9 @@ public class StreetViewActivity extends AppCompatActivity implements OnStreetVie
     }
 
     /**
-     used to manage the countdown timer in an Android application.
-     It initializes a new CountDownTimer object with a duration of 2 minutes and an interval of 1 second*/
+     * used to manage the countdown timer in an Android application.
+     * It initializes a new CountDownTimer object with a duration of 2 minutes and an interval of 1 second
+     */
     private void timerManagement() {
         TextView textView = findViewById(R.id.timer);
 

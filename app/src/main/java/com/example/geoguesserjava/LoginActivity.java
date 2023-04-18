@@ -8,11 +8,12 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.example.geoguesserjava.entity.user.LoggedInUser;
+import com.example.geoguesserjava.server.Services;
 import com.example.geoguesserjava.server.UserHttpClient;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final UserHttpClient userHttpClient = new UserHttpClient();
+    private static final UserHttpClient userHttpClient = Services.getUserHttpClient();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         userHttpClient.loginUser(usernameAndPassword);
 
         if(LoggedInUser.getCurrentUser() == null){
-            DialogsService.errorDialog("Невалиден е-майл или парола",this);
+            DialogsService.errorDialog("Невалидено потребителско име или парола",this);
         }else{
             startActivity(intent);
         }

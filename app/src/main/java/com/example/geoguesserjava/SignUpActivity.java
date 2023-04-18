@@ -9,11 +9,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.geoguesserjava.entity.user.CreateUserDto;
 import com.example.geoguesserjava.entity.user.LoggedInUser;
+import com.example.geoguesserjava.server.Services;
 import com.example.geoguesserjava.server.UserHttpClient;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private static final UserHttpClient userHttpClient = new UserHttpClient();
+    private static final UserHttpClient userHttpClient = Services.getUserHttpClient();
     EditText editTextUsername, editFirstName, editLastName, editEmailText, editTextPassword;
 
     @Override
