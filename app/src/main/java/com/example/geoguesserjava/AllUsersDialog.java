@@ -56,7 +56,7 @@ public class AllUsersDialog extends AppCompatDialog {
             createTextCell(context, String.valueOf(i + 1), tableRow, cellStyle);
             createTextCell(context, String.valueOf(user.getUsername()), tableRow, cellStyle);
             createTextCell(context, String.valueOf(user.getLevel()), tableRow, cellStyle);
-            createTextCell(context, String.valueOf(user.getPoints()), tableRow, cellStyle);
+            createTextCell(context, String.format("%.2f",user.getPoints()), tableRow, cellStyle);
 
             createImageCell(context, user, tableRow, cellStyle);
 
@@ -87,7 +87,7 @@ public class AllUsersDialog extends AppCompatDialog {
         numberTextView.setGravity(Gravity.CENTER);
         numberTextView.setTextSize(20);
         numberTextView.setBackground(cellStyle);
-        TableRow.LayoutParams numberParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 200); // set the height to 100 pixels
+        TableRow.LayoutParams numberParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, 200); // set the height to 100 pixels
         numberTextView.setLayoutParams(numberParams);
         tableRow.addView(numberTextView);
     }

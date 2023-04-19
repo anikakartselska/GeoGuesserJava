@@ -91,11 +91,12 @@ public class UserScreenActivity extends AppCompatActivity {
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
                 byte[] imageBytes = baos.toByteArray();
 
-                ByteArrayInputStream inputStream = new ByteArrayInputStream(imageBytes);
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inJustDecodeBounds = true;
 
-                userHttpClient.updateUser(new UpdateUserDto(1L, 1, 0.00, imageBytes));
+                userHttpClient.updateUser(new UpdateUserDto(LoggedInUser.getCurrentUser().getId(),
+                        LoggedInUser.getCurrentUser().getLevel(),
+                        LoggedInUser.getCurrentUser().getPoints(), imageBytes));
 
                 // Now you can save the imageBytes to your database
             } catch (IOException e) {

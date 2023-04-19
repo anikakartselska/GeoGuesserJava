@@ -64,7 +64,8 @@ public class StreetViewActivity extends AppCompatActivity implements OnStreetVie
      */
     @Override
     public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
-        LatLng unknownCityLatLng = mapManagementService.findCityLatLang(cityHttpClient.getRandomCity().getName(), this);
+        LatLng unknownCityLatLng = twoPlayers ? mapManagementService.findCityLatLang(cityHttpClient.getRandomCity().getName(), this)
+                : mapManagementService.findCityLatLang(cityHttpClient.getRandomCityFromAnyLevel().getName(), this);
         this.unknownCityToGuessCityLatLng = new UnknownCityToGuessCityLatLng(unknownCityLatLng);
         streetViewPanorama.setPosition(unknownCityToGuessCityLatLng.getUnknownCityLatLng(), StreetViewSource.OUTDOOR);
         streetViewPanorama.setStreetNamesEnabled(true);
