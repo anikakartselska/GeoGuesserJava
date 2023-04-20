@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:minWidth="413dp"
     android:minHeight="311dp"
-    tools:context=".AllUsersDialog">
+    tools:context=".ui.activities.AllUsersDialog">
 
     <ScrollView
         android:id="@+id/schrollView4"

@@ -1,4 +1,4 @@
-package com.example.geoguesserjava;
+package com.example.geoguesserjava.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,9 +10,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.geoguesserjava.ui.utils.MapManagementService;
+import com.example.geoguesserjava.R;
+import com.example.geoguesserjava.ui.utils.Constants;
+import com.example.geoguesserjava.ui.utils.UnknownCityToGuessCityLatLng;
 import com.example.geoguesserjava.server.CityHttpClient;
 import com.example.geoguesserjava.server.Services;
-import com.example.geoguesserjava.server.UserHttpClient;
 import com.google.android.gms.maps.OnStreetViewPanoramaReadyCallback;
 import com.google.android.gms.maps.StreetViewPanorama;
 import com.google.android.gms.maps.SupportStreetViewPanoramaFragment;
@@ -64,9 +67,9 @@ public class StreetViewActivity extends AppCompatActivity implements OnStreetVie
      */
     @Override
     public void onStreetViewPanoramaReady(StreetViewPanorama streetViewPanorama) {
-        LatLng unknownCityLatLng = twoPlayers ? mapManagementService.findCityLatLang(cityHttpClient.getRandomCity().getName(), this)
-                : mapManagementService.findCityLatLang(cityHttpClient.getRandomCityFromAnyLevel().getName(), this);
-        this.unknownCityToGuessCityLatLng = new UnknownCityToGuessCityLatLng(unknownCityLatLng);
+        String cityName = twoPlayers ? cityHttpClient.getRandomCityFromAnyLevel().getName() :cityHttpClient.getRandomCity().getName();
+        LatLng unknownCityLatLng = mapManagementService.findCityLatLang(cityName, this);
+        this.unknownCityToGuessCityLatLng = new UnknownCityToGuessCityLatLng(cityName, unknownCityLatLng);
         streetViewPanorama.setPosition(unknownCityToGuessCityLatLng.getUnknownCityLatLng(), StreetViewSource.OUTDOOR);
         streetViewPanorama.setStreetNamesEnabled(true);
         streetViewPanorama.setPanningGesturesEnabled(true);
@@ -77,6 +80,8 @@ public class StreetViewActivity extends AppCompatActivity implements OnStreetVie
                         .zoom(streetViewPanorama.getPanoramaCamera().zoom)
                         .build(), 2000
         );
+
+
     }
 
     /**
@@ -133,7 +138,7 @@ public class StreetViewActivity extends AppCompatActivity implements OnStreetVie
             @Override
             public void onFinish() {
                 textView.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(), StringConstants.TIME_IS_UP, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), Constants.TIME_IS_UP, Toast.LENGTH_LONG).show();
                 goToMapsActivity();
             }
         }.start();

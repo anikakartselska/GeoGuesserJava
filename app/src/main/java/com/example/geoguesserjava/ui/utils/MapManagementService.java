@@ -1,4 +1,4 @@
-package com.example.geoguesserjava;
+package com.example.geoguesserjava.ui.utils;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -44,7 +44,7 @@ public class MapManagementService {
             }  // handle case where no addresses were returned
             else throw new IOException();
         } catch (IOException e) {
-            DialogsService.errorDialog(StringConstants.CITY_NOT_FOUND_ERROR, context);
+            DialogsService.errorDialog(Constants.CITY_NOT_FOUND_ERROR, context);
             return centerOfBulgaria;
         }
 

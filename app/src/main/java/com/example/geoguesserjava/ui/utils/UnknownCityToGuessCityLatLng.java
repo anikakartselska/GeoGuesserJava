@@ -1,4 +1,4 @@
-package com.example.geoguesserjava;
+package com.example.geoguesserjava.ui.utils;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -16,7 +16,13 @@ public class UnknownCityToGuessCityLatLng implements Parcelable {
      */
     private LatLng guessCityLatLng;
 
-    public UnknownCityToGuessCityLatLng(LatLng unknownCityLatLng) {
+    /**
+     * the name of the unknown city to be guessed
+     */
+    private String unknownCityName;
+
+    public UnknownCityToGuessCityLatLng(String unknownCityName, LatLng unknownCityLatLng) {
+        this.unknownCityName = unknownCityName;
         this.unknownCityLatLng = unknownCityLatLng;
     }
 
@@ -32,6 +38,10 @@ public class UnknownCityToGuessCityLatLng implements Parcelable {
         this.guessCityLatLng = guessCityLatLng;
     }
 
+    public String getUnknownCityName() {
+        return unknownCityName;
+    }
+
     /**
      * Constructs a new UnknownCityToGuessCityLatLng object from the given parcel.
      * @param in the given parcel
@@ -39,6 +49,7 @@ public class UnknownCityToGuessCityLatLng implements Parcelable {
     protected UnknownCityToGuessCityLatLng(Parcel in) {
         unknownCityLatLng = in.readParcelable(LatLng.class.getClassLoader());
         guessCityLatLng = in.readParcelable(LatLng.class.getClassLoader());
+        unknownCityName = in.readString();
     }
 
     /**
@@ -56,6 +67,7 @@ public class UnknownCityToGuessCityLatLng implements Parcelable {
         public UnknownCityToGuessCityLatLng createFromParcel(Parcel in) {
             return new UnknownCityToGuessCityLatLng(in);
         }
+
         @Override
         public UnknownCityToGuessCityLatLng[] newArray(int size) {
             return new UnknownCityToGuessCityLatLng[size];
@@ -73,7 +85,7 @@ public class UnknownCityToGuessCityLatLng implements Parcelable {
     }
 
     /**
-     * Writes unknownCityLatLng and guessCityLatLng to Parcel
+     * Writes unknownCityLatLng, guessCityLatLng, and unknownCityName to Parcel
      * @param dest The Parcel in which the object should be written.
      * @param flags Additional flags about how the object should be written.
      * May be 0 or {@link #PARCELABLE_WRITE_RETURN_VALUE}.
@@ -82,5 +94,6 @@ public class UnknownCityToGuessCityLatLng implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(unknownCityLatLng, flags);
         dest.writeParcelable(guessCityLatLng, flags);
+        dest.writeString(unknownCityName);
     }
 }

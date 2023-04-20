@@ -20,21 +20,20 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/launcherimage"
         android:label="Познай България"
         android:supportsRtl="true"
         android:theme="@style/Theme.GeoGuesserJava"
         android:usesCleartextTraffic="true"
-        android:name=".BulgariaGuesserApplication"
         tools:targetApi="31">
         <activity
-            android:name=".UserScreenActivity"
+            android:name=".ui.activities.UserScreenActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".ui.activities.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.activities.LoginActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,7 +46,7 @@
             android:value="AIzaSyAEL0yxmcwo8lhXueOkOKeDZMlE8iOLq_k" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".ui.activities.MapsActivity"
             android:exported="false"
             android:label="@string/title_activity_maps" />
 
@@ -56,7 +55,7 @@
             android:required="false" />
 
         <activity
-            android:name=".StreetViewActivity"
+            android:name=".ui.activities.StreetViewActivity"
             android:exported="false" />
     </application>
 

@@ -1,4 +1,4 @@
-package com.example.geoguesserjava;
+package com.example.geoguesserjava.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.geoguesserjava.ui.utils.DialogsService;
+import com.example.geoguesserjava.R;
 import com.example.geoguesserjava.entity.user.CreateUserDto;
 import com.example.geoguesserjava.entity.user.LoggedInUser;
 import com.example.geoguesserjava.server.Services;
@@ -17,17 +19,29 @@ public class SignUpActivity extends AppCompatActivity {
     private static final UserHttpClient userHttpClient = Services.getUserHttpClient();
     EditText editTextUsername, editFirstName, editLastName, editEmailText, editTextPassword;
 
+    /**
+     * Initializes the activity and sets up the EditText views.
+     *
+     * @param savedInstanceState the saved state of the activity, or null if there is no saved state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup);
-         editTextUsername = findViewById(R.id.username_signup_txt);
-         editFirstName = findViewById(R.id.first_name_txt);
-         editLastName = findViewById(R.id.last_name_txt);
-         editEmailText = findViewById(R.id.email_txt);
-         editTextPassword = findViewById(R.id.type_pass_txt);
+        editTextUsername = findViewById(R.id.username_signup_txt);
+        editFirstName = findViewById(R.id.first_name_txt);
+        editLastName = findViewById(R.id.last_name_txt);
+        editEmailText = findViewById(R.id.email_txt);
+        editTextPassword = findViewById(R.id.type_pass_txt);
     }
 
+    /**
+     * Called when the user clicks on the registration button.
+     * Checks all the fields and creates a new user if all fields are valid.
+     * If the new user is successfully created, starts the UserScreenActivity and displays an error dialog otherwise.
+     *
+     * @param view the view that was clicked
+     */
     public void onRegistrationClick(View view) {
         Intent intent = new Intent(this, UserScreenActivity.class);
 
@@ -41,9 +55,14 @@ public class SignUpActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         }
-
     }
 
+    /**
+     * Checks all the fields on the sign-up screen and returns a CreateUserDto object if all fields are valid.
+     * If any field is invalid, an error message is displayed and null is returned.
+     *
+     * @return a CreateUserDto object if all fields are valid, null otherwise
+     */
     private CreateUserDto CheckAllFieldsAndGetCreateUserDto() {
 
         String email = editEmailText.getText().toString();

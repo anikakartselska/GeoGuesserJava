@@ -1,7 +1,7 @@
-package com.example.geoguesserjava;
+package com.example.geoguesserjava.ui.activities;
 
-import static com.example.geoguesserjava.StringConstants.getPersonIcon;
-import static com.example.geoguesserjava.StringConstants.RESULTS_FROM_GAME_TITLE;
+import static com.example.geoguesserjava.ui.utils.Constants.getPersonIcon;
+import static com.example.geoguesserjava.ui.utils.Constants.RESULTS_FROM_GAME_TITLE;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -12,6 +12,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.geoguesserjava.ui.utils.DialogsService;
+import com.example.geoguesserjava.ui.utils.MapManagementService;
+import com.example.geoguesserjava.R;
+import com.example.geoguesserjava.ui.utils.Constants;
+import com.example.geoguesserjava.ui.utils.UnknownCityToGuessCityLatLng;
 import com.example.geoguesserjava.databinding.ActivityMapsBinding;
 import com.example.geoguesserjava.entity.user.LoggedInUser;
 import com.example.geoguesserjava.entity.user.UpdateUserDto;
@@ -74,7 +79,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(binding.getRoot());
 
         usernameText = findViewById(R.id.username_text);
-        usernameText.setText(StringConstants.USERNAME);
+        usernameText.setText(Constants.USERNAME);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
@@ -137,12 +142,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (playerNumber == 1 && twoPlayers) {
             playerNumber++;
             guessCityOfTheFirstPlayerInTwoPlayerGame = unknownCityToGuessCityLatLng.getGuessCityLatLng();
-            usernameText.setText(StringConstants.FRIEND);
+            usernameText.setText(Constants.FRIEND);
 
         } else if (playerNumber == 2 && twoPlayers) {
             Double firstPlayerKilometers = mapManagementService.findDistanceBetweenTwoCitiesInKilometers(unknownCityToGuessCityLatLng.getGuessCityLatLng(), unknownCityToGuessCityLatLng.getUnknownCityLatLng());
             Double secondPlayerKilometers = mapManagementService.findDistanceBetweenTwoCitiesInKilometers(guessCityOfTheFirstPlayerInTwoPlayerGame, unknownCityToGuessCityLatLng.getUnknownCityLatLng());
-            showDialogAfterGuess(firstPlayerKilometers, secondPlayerKilometers, StringConstants.USERNAME);
+            showDialogAfterGuess(firstPlayerKilometers, secondPlayerKilometers, 0.0);
             mapManagementService.drawLineBetweenTwoLocationsOnTheMap(guessCityOfTheFirstPlayerInTwoPlayerGame, unknownCityToGuessCityLatLng.getUnknownCityLatLng(), mMap);
             mapManagementService.drawLineBetweenTwoLocationsOnTheMap(unknownCityToGuessCityLatLng.getGuessCityLatLng(), unknownCityToGuessCityLatLng.getUnknownCityLatLng(), mMap);
             addMarkerWithIcon(guessCityOfTheFirstPlayerInTwoPlayerGame, getPersonIcon(this));
@@ -150,8 +155,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             addMarkerWithIcon(unknownCityToGuessCityLatLng.getGuessCityLatLng(), getPersonIcon(this));
         } else {
             Double firstPlayerKilometers = mapManagementService.findDistanceBetweenTwoCitiesInKilometers(unknownCityToGuessCityLatLng.getGuessCityLatLng(), unknownCityToGuessCityLatLng.getUnknownCityLatLng());
-            showDialogAfterGuess(firstPlayerKilometers, -1.0, StringConstants.USERNAME);
-            updateUserAfterGameByDifferenceInKilometers(firstPlayerKilometers);
+            Double wonPoints = calculatePoints(LoggedInUser.getCurrentUser().getLevel(), firstPlayerKilometers);
+            showDialogAfterGuess(firstPlayerKilometers, -1.0, wonPoints);
+            updateUserAfterGameByTheWonPoints(wonPoints);
             mapManagementService.drawLineBetweenTwoLocationsOnTheMap(unknownCityToGuessCityLatLng.getGuessCityLatLng(), unknownCityToGuessCityLatLng.getUnknownCityLatLng(), mMap);
             addMarkerWithIcon(unknownCityToGuessCityLatLng.getUnknownCityLatLng(), null);
             addMarkerWithIcon(unknownCityToGuessCityLatLng.getGuessCityLatLng(), getPersonIcon(this));
@@ -164,36 +170,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     /**
      * The showDialogAfterGuess() method is a private method that is called within the OnShowIfGuessedClick() method. It is responsible for creating a dialog box that displays the results of the player's guess. The dialog box contains information about the distance between the guessed city and the actual city, as well as the number of points earned by the player based on their guess.
-     * <p>
      * If the game is being played between two players, the method calculates the distance between the first player's guess and the actual city, and then calculates the distance between the second player's guess and the actual city. It then determines which player was closer to the actual city and displays a message indicating the winner.
-     * <p>
      * The method also provides a button for the user to go to the user screen activity.
      *
      * @param firstPlayerKilometers
      * @param secondPlayerKilometers
-     * @param username
      */
 
-    private void showDialogAfterGuess(Double firstPlayerKilometers, Double secondPlayerKilometers, String username) {
-        String htmlMessage = StringConstants.constructMessageForThePlayerResults(username,
-                firstPlayerKilometers,
-                calculatePoints(2, firstPlayerKilometers)
-        );
+    private void showDialogAfterGuess(Double firstPlayerKilometers, Double secondPlayerKilometers, Double wonPoints) {
+        String htmlMessage = Constants.constructMessageForTheUnknownCityName(unknownCityToGuessCityLatLng.getUnknownCityName()).concat(
+                Constants.constructMessageForThePlayerResults(Constants.USERNAME,
+                        firstPlayerKilometers,
+                        wonPoints < 0.0 ? calculatePoints(2, firstPlayerKilometers) : wonPoints
+                ));
         if (secondPlayerKilometers > 0) {
-            htmlMessage = htmlMessage.concat(StringConstants.constructMessageForThePlayerResults(StringConstants.FRIEND,
+            htmlMessage = htmlMessage.concat(Constants.constructMessageForThePlayerResults(Constants.FRIEND,
                     secondPlayerKilometers,
                     calculatePoints(2, secondPlayerKilometers))
             ).concat(
-                    StringConstants.messageForTheWinnerInTwoPlayersGame(
-                            firstPlayerKilometers < secondPlayerKilometers ? StringConstants.USERNAME : StringConstants.FRIEND
+                    Constants.messageForTheWinnerInTwoPlayersGame(
+                            firstPlayerKilometers < secondPlayerKilometers ? Constants.USERNAME : Constants.FRIEND
                     )
             )
             ;
-
         }
         DialogsService.dialogAtTheBottomOfTheWindow(RESULTS_FROM_GAME_TITLE,
                 htmlMessage,
-                StringConstants.GO_TO_USER_PAGE,
+                Constants.GO_TO_USER_PAGE,
                 this,
                 (dialog, which) -> goToUserScreenActivity());
     }
@@ -225,9 +228,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         startActivity(intent);
     }
 
-    private void updateUserAfterGameByDifferenceInKilometers(Double kilometers) {
+    /**
+     * Updates the current logged-in user's information after a game by adding the won points to their total points and
+     * recalculating their level and points according to the game rules.
+     *
+     * @param wonPoints the number of points the user won in the game
+     */
+    private void updateUserAfterGameByTheWonPoints(Double wonPoints) {
         User loggedInUser = LoggedInUser.getCurrentUser();
-        double newPoints = LoggedInUser.getCurrentUser().getPoints() + calculatePoints(loggedInUser.getLevel(), kilometers);
+        double newPoints = LoggedInUser.getCurrentUser().getPoints() + wonPoints;
         newPoints = BigDecimal.valueOf(newPoints).setScale(2, RoundingMode.HALF_UP).doubleValue();
         Integer level = calculateUserLevel(loggedInUser.getLevel(), newPoints);
         newPoints = calculateUserPoints(newPoints);
@@ -235,21 +244,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     /**
-     * Calculates the points earned by a user based on their level and the distance
-     * between the guessCity and unknown city in kilometers.
+     * Calculates the points earned by a user for a given number of kilometers and user level.
      *
-     * @param userLevel  the level of the user
-     * @param kilometers the distance between the guessCity and unknown city in kilometers
-     * @return earned points
+     * @param userLevel  the current user level
+     * @param kilometers the number of kilometers traveled
+     * @return the points earned by the user
      */
     private Double calculatePoints(int userLevel, Double kilometers) {
         return (500 - kilometers) / userLevel;
     }
 
+    /**
+     * Calculates the level of a user based on their current level and points earned.
+     *
+     * @param userLevel the current user level
+     * @param points    the total points earned by the user
+     * @return the new level of the user
+     */
     private int calculateUserLevel(int userLevel, Double points) {
         return points >= 1000.0 ? ++userLevel : userLevel;
     }
 
+    /**
+     * Calculates the points earned by a user after deducting 1000 points (if the user has more than 1000 points).
+     *
+     * @param points the total points earned by the user
+     * @return the adjusted points earned by the user
+     */
     private Double calculateUserPoints(Double points) {
         return points >= 1000.0 ? (Double) (points - 1000.0) : points;
     }

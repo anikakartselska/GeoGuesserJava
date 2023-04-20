@@ -1,4 +1,4 @@
-package com.example.geoguesserjava;
+package com.example.geoguesserjava.ui.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,12 +12,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.geoguesserjava.ui.utils.DialogsService;
+import com.example.geoguesserjava.R;
+import com.example.geoguesserjava.ui.utils.Constants;
 import com.example.geoguesserjava.entity.user.LoggedInUser;
 import com.example.geoguesserjava.entity.user.UpdateUserDto;
 import com.example.geoguesserjava.server.Services;
 import com.example.geoguesserjava.server.UserHttpClient;
-
-import java.io.ByteArrayInputStream;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -27,6 +28,13 @@ public class UserScreenActivity extends AppCompatActivity {
 
     private static final UserHttpClient userHttpClient = Services.getUserHttpClient();
 
+    /**
+     * The onCreate() method is called when the activity is first created. It initializes
+     * the UI components and sets their properties based on the data retrieved from the
+     * LoggedInUser class.
+     *
+     * @param savedInstanceState a Bundle object containing the activity's previously saved state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,10 +45,10 @@ public class UserScreenActivity extends AppCompatActivity {
         TextView levelText = findViewById(R.id.userLevel);
         TextView welcomeText = findViewById(R.id.welcomeUser);
 
-        pointsToNextLevelText.setText(StringConstants.pointsToNextLevelText(1000 - LoggedInUser.getCurrentUser().getPoints()));
-        pointsText.setText(StringConstants.pointsText(LoggedInUser.getCurrentUser().getPoints()));
-        levelText.setText(StringConstants.levelText(LoggedInUser.getCurrentUser().getLevel()));
-        welcomeText.setText(StringConstants.welcomeText(LoggedInUser.getCurrentUser().getFirstName()));
+        pointsToNextLevelText.setText(Constants.pointsToNextLevelText(1000 - LoggedInUser.getCurrentUser().getPoints()));
+        pointsText.setText(Constants.pointsText(LoggedInUser.getCurrentUser().getPoints()));
+        levelText.setText(Constants.levelText(LoggedInUser.getCurrentUser().getLevel()));
+        welcomeText.setText(Constants.welcomeText(LoggedInUser.getCurrentUser().getFirstName()));
 
         if (LoggedInUser.getCurrentUser().getImage() == null || LoggedInUser.getCurrentUser().getImage().length == 0) {
             userPhoto.setImageResource(R.drawable.baseline_person_24); // set the image resource
@@ -113,13 +121,19 @@ public class UserScreenActivity extends AppCompatActivity {
      * @param view
      */
     public void onStartGameClick(View view) {
-        DialogsService.messageDialog(StringConstants.GAME_RULES_TITLE,
-                StringConstants.GAME_RULES, StringConstants.BEGIN, this, (dialog, which) -> {
+        DialogsService.messageDialog(Constants.GAME_RULES_TITLE,
+                Constants.GAME_RULES, Constants.BEGIN, this, (dialog, which) -> {
                     Intent intent = new Intent(UserScreenActivity.this, StreetViewActivity.class);
                     startActivity(intent);
                 });
     }
 
+    /**
+     * This method is called when the "Класация" button is clicked.
+     * It creates and shows an instance of the AllUsersDialog class, which displays a dialog with a list of all users sorted by points and level.
+     *
+     * @param view the button view that was clicked
+     */
     public void onOpenAllUsers(View view) {
         AllUsersDialog myDialog = new AllUsersDialog(this);
         // set any necessary properties of the dialog, such as a title
@@ -138,8 +152,8 @@ public class UserScreenActivity extends AppCompatActivity {
      */
 
     public void onStartTwoPlayersGameClick(View view) {
-        DialogsService.messageDialog(StringConstants.GAME_RULES_TITLE,
-                StringConstants.GAME_RULES, StringConstants.BEGIN, this, (dialog, which) -> {
+        DialogsService.messageDialog(Constants.GAME_RULES_TITLE,
+                Constants.GAME_RULES, Constants.BEGIN, this, (dialog, which) -> {
                     Intent intent = new Intent(UserScreenActivity.this, StreetViewActivity.class);
                     intent.putExtra("twoPlayers", true);
                     startActivity(intent);
@@ -155,8 +169,8 @@ public class UserScreenActivity extends AppCompatActivity {
      * @param view the logout button
      */
     public void onLogoutClick(View view) {
-        DialogsService.messageDialog(StringConstants.EXIT, StringConstants.ARE_YOU_SURE_YOU_WANT_TO_LEAVE
-                , StringConstants.YES, this, (dialog, which) -> {
+        DialogsService.messageDialog(Constants.EXIT, Constants.ARE_YOU_SURE_YOU_WANT_TO_LEAVE
+                , Constants.YES, this, (dialog, which) -> {
                     Intent intent = new Intent(this, LoginActivity.class);
                     userHttpClient.logoutUser();
                     startActivity(intent);

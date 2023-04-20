@@ -1,4 +1,4 @@
-package com.example.geoguesserjava;
+package com.example.geoguesserjava.ui.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -20,7 +20,7 @@ public class DialogsService {
      * @param context      provides a way to access the resources and features of the application
      */
     public static void errorDialog(String errorMessage, Context context) {
-        AlertDialog dialog = baseDialog(StringConstants.ERROR, StringConstants.MESSAGE + errorMessage, StringConstants.OK, context, null);
+        AlertDialog dialog = baseDialog(Constants.ERROR, Constants.MESSAGE + errorMessage, Constants.OK, context, null);
         dialog.show();
     }
 
