@@ -137,7 +137,7 @@ public class UserScreenActivity extends AppCompatActivity {
     public void onOpenAllUsers(View view) {
         AllUsersDialog myDialog = new AllUsersDialog(this);
         // set any necessary properties of the dialog, such as a title
-        myDialog.setTitle("Играчи");
+        myDialog.setTitle(Constants.PLAYERS);
         // show the dialog
         myDialog.show();
     }

@@ -51,6 +51,21 @@ public class Constants {
     public static final String GAME_RULES = "Имаш 2 минути да разгледаш локацията. След като си стигнал до отговора," +
             " може да отвориш картата и да отбележиш коя според теб е непознатата локация." +
             "Не забравяй,че играта е само в границите на България.";
+    public static final String INVALID_USERNAME_OR_PASSWORD = "Невалидено потребителско име или парола";
+    public static final double DOUBLE_ZERO = 0.0;
+    public static final int LEVEL_FOR_TWO_PLAYERS_GAME = 2;
+    public static final String REGEX_FOR_3_TO_15_LETTERS = "[a-zA-Z]{3,15}";
+    public static final String PASSWORD_REGEX = "(?!.*#)[a-zA-Z0-9]{5,15}";
+    public static final String USERNAME_REGEX = "[a-zA-Z0-9_-]{3,15}";
+    public static final String EMAIL_REGEX = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}";
+    public static final CharSequence ERROR_MESSAGE_FOR_INVALID_USERNAME = "Потребителското име трябва да е между 3 и 15 знака и може да съдържа само букви, цифри, тирета и подчертавки.";
+    public static final CharSequence ERROR_MESSAGE_FOR_EXISTING_USERNAME = "Потребител с такова потребителско име вече съществува";
+    public static final CharSequence ERROR_MESSAGE_FOR_INVALID_EMAIL = "Невалиден е-майл адрес";
+    public static final CharSequence ERROR_MESSAGE_FOR_EXISTING_EMAIL = "Потребител с такъв е-майл вече съществува";
+    public static final CharSequence ERROR_FOR_INVALID_NAME = "Името трябва да е между 3 и 15 знака и може да съдържа само букви.";
+    public static final CharSequence ERROR_FOR_INVALID_LAST_NAME = "Фамилията трябва да е между 3 и 15 знака и може да съдържа само букви.";
+    public static final CharSequence ERROR_FOR_INVALID_PASSWORD = "Паролата трябва да е между 5 и 15 знака и не може да съдържа символа '#'.";
+    public static final CharSequence PLAYERS = "Играчи";
 
     public static String constructMessageForTheUnknownCityName(String cityName) {
         return String.format("<i><b>Непознатият град е: </b></i> %s<br>", englishNameToBulgarianName.get(cityName));

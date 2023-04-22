@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.example.geoguesserjava.ui.utils.Constants;
 import com.example.geoguesserjava.ui.utils.DialogsService;
 import com.example.geoguesserjava.R;
 import com.example.geoguesserjava.entity.user.LoggedInUser;
@@ -43,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         userHttpClient.loginUser(usernameAndPassword);
 
         if (LoggedInUser.getCurrentUser() == null) {
-            DialogsService.errorDialog("Невалидено потребителско име или парола", this);
+            DialogsService.errorDialog(Constants.INVALID_USERNAME_OR_PASSWORD, this);
         } else {
             startActivity(intent);
         }

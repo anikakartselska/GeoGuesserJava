@@ -1,5 +1,6 @@
 package com.example.geoguesserjava.ui.activities;
 
+import static com.example.geoguesserjava.ui.utils.Constants.LEVEL_FOR_TWO_PLAYERS_GAME;
 import static com.example.geoguesserjava.ui.utils.Constants.getPersonIcon;
 import static com.example.geoguesserjava.ui.utils.Constants.RESULTS_FROM_GAME_TITLE;
 
@@ -147,7 +148,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } else if (playerNumber == 2 && twoPlayers) {
             Double firstPlayerKilometers = mapManagementService.findDistanceBetweenTwoCitiesInKilometers(unknownCityToGuessCityLatLng.getGuessCityLatLng(), unknownCityToGuessCityLatLng.getUnknownCityLatLng());
             Double secondPlayerKilometers = mapManagementService.findDistanceBetweenTwoCitiesInKilometers(guessCityOfTheFirstPlayerInTwoPlayerGame, unknownCityToGuessCityLatLng.getUnknownCityLatLng());
-            showDialogAfterGuess(firstPlayerKilometers, secondPlayerKilometers, 0.0);
+            showDialogAfterGuess(firstPlayerKilometers, secondPlayerKilometers, Constants.DOUBLE_ZERO);
             mapManagementService.drawLineBetweenTwoLocationsOnTheMap(guessCityOfTheFirstPlayerInTwoPlayerGame, unknownCityToGuessCityLatLng.getUnknownCityLatLng(), mMap);
             mapManagementService.drawLineBetweenTwoLocationsOnTheMap(unknownCityToGuessCityLatLng.getGuessCityLatLng(), unknownCityToGuessCityLatLng.getUnknownCityLatLng(), mMap);
             addMarkerWithIcon(guessCityOfTheFirstPlayerInTwoPlayerGame, getPersonIcon(this));
@@ -181,12 +182,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String htmlMessage = Constants.constructMessageForTheUnknownCityName(unknownCityToGuessCityLatLng.getUnknownCityName()).concat(
                 Constants.constructMessageForThePlayerResults(Constants.USERNAME,
                         firstPlayerKilometers,
-                        wonPoints < 0.0 ? calculatePoints(2, firstPlayerKilometers) : wonPoints
+                        wonPoints < Constants.DOUBLE_ZERO ? calculatePoints(LEVEL_FOR_TWO_PLAYERS_GAME, firstPlayerKilometers) : wonPoints
                 ));
-        if (secondPlayerKilometers > 0) {
+        if (secondPlayerKilometers > Constants.DOUBLE_ZERO) {
             htmlMessage = htmlMessage.concat(Constants.constructMessageForThePlayerResults(Constants.FRIEND,
                     secondPlayerKilometers,
-                    calculatePoints(2, secondPlayerKilometers))
+                    calculatePoints(LEVEL_FOR_TWO_PLAYERS_GAME, secondPlayerKilometers))
             ).concat(
                     Constants.messageForTheWinnerInTwoPlayersGame(
                             firstPlayerKilometers < secondPlayerKilometers ? Constants.USERNAME : Constants.FRIEND

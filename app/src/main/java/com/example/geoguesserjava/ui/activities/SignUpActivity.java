@@ -7,6 +7,7 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.geoguesserjava.ui.utils.Constants;
 import com.example.geoguesserjava.ui.utils.DialogsService;
 import com.example.geoguesserjava.R;
 import com.example.geoguesserjava.entity.user.CreateUserDto;
@@ -71,34 +72,34 @@ public class SignUpActivity extends AppCompatActivity {
         String lastName = editLastName.getText().toString();
         String pass = editTextPassword.getText().toString();
 
-        if (!username.matches("[a-zA-Z0-9_-]{3,15}")) {
-            editTextUsername.setError("Потребителското име трябва да е между 3 и 15 знака и може да съдържа само букви, цифри, тирета и подчертавки.");
+        if (!username.matches(Constants.USERNAME_REGEX)) {
+            editTextUsername.setError(Constants.ERROR_MESSAGE_FOR_INVALID_USERNAME);
             return null;
         } else if (userHttpClient.usernameExists(username)) {
-            editTextUsername.setError("Потребител с такова потребителско име вече съществува");
+            editTextUsername.setError(Constants.ERROR_MESSAGE_FOR_EXISTING_USERNAME);
             return null;
         }
 
-        if (!email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) {
-            editEmailText.setError("Невалиден е-майл адрес");
+        if (!email.matches(Constants.EMAIL_REGEX)) {
+            editEmailText.setError(Constants.ERROR_MESSAGE_FOR_INVALID_EMAIL);
             return null;
         } else if (userHttpClient.emailExists(email)) {
-            editEmailText.setError("Потребител с такъв е-майл вече съществува");
+            editEmailText.setError(Constants.ERROR_MESSAGE_FOR_EXISTING_EMAIL);
             return null;
         }
 
-        if (!firstName.matches("[a-zA-Z]{3,15}")) {
-            editFirstName.setError("Името трябва да е между 3 и 15 знака и може да съдържа само букви.");
+        if (!firstName.matches(Constants.REGEX_FOR_3_TO_15_LETTERS)) {
+            editFirstName.setError(Constants.ERROR_FOR_INVALID_NAME);
             return null;
         }
 
-        if (!lastName.matches("[a-zA-Z]{3,15}")) {
-            editLastName.setError("Фамилията трябва да е между 3 и 15 знака и може да съдържа само букви.");
+        if (!lastName.matches(Constants.REGEX_FOR_3_TO_15_LETTERS)) {
+            editLastName.setError(Constants.ERROR_FOR_INVALID_LAST_NAME);
             return null;
         }
 
-        if (!pass.matches("(?!.*#)[a-zA-Z0-9]{5,15}")) {
-            editTextPassword.setError("Паролата трябва да е между 5 и 15 знака и не може да съдържа символа '#'.");
+        if (!pass.matches(Constants.PASSWORD_REGEX)) {
+            editTextPassword.setError(Constants.ERROR_FOR_INVALID_PASSWORD);
             return null;
         }
         return new CreateUserDto(pass, email, firstName, lastName, username);
