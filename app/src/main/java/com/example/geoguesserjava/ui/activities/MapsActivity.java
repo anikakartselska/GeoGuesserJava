@@ -182,7 +182,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String htmlMessage = Constants.constructMessageForTheUnknownCityName(unknownCityToGuessCityLatLng.getUnknownCityName()).concat(
                 Constants.constructMessageForThePlayerResults(Constants.USERNAME,
                         firstPlayerKilometers,
-                        wonPoints < Constants.DOUBLE_ZERO ? calculatePoints(LEVEL_FOR_TWO_PLAYERS_GAME, firstPlayerKilometers) : wonPoints
+                        wonPoints == Constants.DOUBLE_ZERO ? calculatePoints(LEVEL_FOR_TWO_PLAYERS_GAME, firstPlayerKilometers) : wonPoints
                 ));
         if (secondPlayerKilometers > Constants.DOUBLE_ZERO) {
             htmlMessage = htmlMessage.concat(Constants.constructMessageForThePlayerResults(Constants.FRIEND,

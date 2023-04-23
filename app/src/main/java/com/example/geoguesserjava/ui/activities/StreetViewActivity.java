@@ -100,7 +100,7 @@ public class StreetViewActivity extends AppCompatActivity implements OnStreetVie
     private void timerManagement() {
         TextView textView = findViewById(R.id.timer);
 
-        long duration = TimeUnit.MINUTES.toMillis(1);
+        long duration = TimeUnit.MINUTES.toMillis(2);
         this.countDownTimer = new CountDownTimer(duration, 2000) {
             int counter = 0;
 
