@@ -36,8 +36,9 @@ public class UserHttpClient {
 
     private static final String GET = "GET";
 
+    private static final SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
     public User createUser(CreateUserDto user) {
-        SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
+
         springServerAsyncTask.execute(POST, CREATE_USER, GSON.toJson(user));
         String result = null;
         try {
@@ -51,7 +52,6 @@ public class UserHttpClient {
     }
 
     public User loginUser(String usernameAndPassSeparatedWith3Hashtags) {
-        SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
         springServerAsyncTask.execute(POST, LOGIN_USER, usernameAndPassSeparatedWith3Hashtags);
         String result = null;
         try {
@@ -66,7 +66,6 @@ public class UserHttpClient {
 
 
     public User updateUser(UpdateUserDto user) {
-        SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
         springServerAsyncTask.execute(POST, USER_UPDATE, GSON.toJson(user));
         String result = null;
         try {
@@ -79,7 +78,6 @@ public class UserHttpClient {
         return updatedUser;
     }
     public Boolean usernameExists(String username) {
-        SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
         springServerAsyncTask.execute(POST, USERNAME_EXISTS, username);
         String result = "";
         try {
@@ -91,7 +89,6 @@ public class UserHttpClient {
     }
 
     public Boolean emailExists(String email) {
-        SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
         springServerAsyncTask.execute(POST, EMAIL_EXISTS, email);
         String result = "";
         try {
@@ -103,7 +100,6 @@ public class UserHttpClient {
     }
 
     public List<User> getAllUsers() {
-        SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
         springServerAsyncTask.execute(GET, USERS_GET_ALL);
         String result = null;
         try {
@@ -115,7 +111,6 @@ public class UserHttpClient {
     }
 
     public void logoutUser() {
-        SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
         springServerAsyncTask.execute(GET, LOGOUT_USER);
         String result = null;
         try {
