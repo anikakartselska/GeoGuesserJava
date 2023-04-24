@@ -36,7 +36,7 @@ public class UserHttpClient {
 
     private static final String GET = "GET";
 
-    public User createUser(CreateUserDto user) { //        CreateUserDto user  = new CreateUserDto("password", "john222sadadoe@example.com", "John", "Doe", "johndoe");
+    public User createUser(CreateUserDto user) {
         SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
         springServerAsyncTask.execute(POST, CREATE_USER, GSON.toJson(user));
         String result = null;
@@ -50,7 +50,7 @@ public class UserHttpClient {
         return createdUser;
     }
 
-    public User loginUser(String usernameAndPassSeparatedWith3Hashtags) {//usernameAndPassSeparatedWith3Hashtags  = "johndoe###password";
+    public User loginUser(String usernameAndPassSeparatedWith3Hashtags) {
         SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
         springServerAsyncTask.execute(POST, LOGIN_USER, usernameAndPassSeparatedWith3Hashtags);
         String result = null;
@@ -65,7 +65,7 @@ public class UserHttpClient {
     }
 
 
-    public User updateUser(UpdateUserDto user) { // UpdateUserDto user  = new UpdateUserDto(1L, 1, 69.77, null);
+    public User updateUser(UpdateUserDto user) {
         SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
         springServerAsyncTask.execute(POST, USER_UPDATE, GSON.toJson(user));
         String result = null;
@@ -78,7 +78,7 @@ public class UserHttpClient {
         loggedInUser.setCurrentUser(updatedUser);
         return updatedUser;
     }
-    public Boolean usernameExists(String username) { // UpdateUserDto user  = new UpdateUserDto(1L, 1, 69.77, null);
+    public Boolean usernameExists(String username) {
         SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
         springServerAsyncTask.execute(POST, USERNAME_EXISTS, username);
         String result = "";
@@ -90,7 +90,7 @@ public class UserHttpClient {
         return result.equals("true");
     }
 
-    public Boolean emailExists(String email) { // UpdateUserDto user  = new UpdateUserDto(1L, 1, 69.77, null);
+    public Boolean emailExists(String email) {
         SpringServerAsyncTask springServerAsyncTask = new SpringServerAsyncTask();
         springServerAsyncTask.execute(POST, EMAIL_EXISTS, email);
         String result = "";
