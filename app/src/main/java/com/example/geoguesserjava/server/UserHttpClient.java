@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutionException;
 public class UserHttpClient {
 
     private static final LoggedInUser loggedInUser = new LoggedInUser();
-    GsonBuilder gsonBuilder = new GsonBuilder();
+    private static GsonBuilder gsonBuilder = new GsonBuilder();
 
     private static final Gson GSON = new Gson();
     private static final String CREATE_USER = "user/create";
@@ -139,7 +139,6 @@ public class UserHttpClient {
     private static User parseUser(String response) {
         User user = null;
         try {
-            GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.registerTypeAdapter(User.class, new UserDeserializer());
             Gson gson = gsonBuilder.create();
             user = gson.fromJson(response, User.class);
@@ -161,7 +160,6 @@ public class UserHttpClient {
         try {
             Type userListType = new TypeToken<List<User>>() {
             }.getType();
-            GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.registerTypeAdapter(User.class, new UserDeserializer());
             Gson gson = gsonBuilder.create();
             users = gson.fromJson(response, userListType);

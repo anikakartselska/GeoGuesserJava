@@ -17,11 +17,11 @@ public class SpringServerAsyncTask extends AsyncTask<String, Void, String> {
     private static final String BASE_URL = "http://10.0.2.2:8080/api/";
 
     /**
-     * params[0] is the request ype, params[1] is the url and params[2] is optional,
+     * params[0] is the request type, params[1] is the url and params[2] is optional,
      * it is the request body and if more than 1 params must be included they
      * should be separated with ###
      *
-     * @return
+     * @return server response as JSON string
      */
     @Override
     protected String doInBackground(String... params) {
